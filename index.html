@@ -3,1120 +3,1061 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Test de Personnalité – BE SUCCESS EXPERIENCE</title>
+<title>Test de Personnalité – BE SUCCESS</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-  :root {
-    --gold: #C9A84C;
-    --gold-light: #E8C96A;
-    --gold-dark: #9A7A2E;
-    --black: #0A0A0A;
-    --black2: #141414;
-    --black3: #1E1E1E;
-    --white: #FFFFFF;
-    --gray: #888;
-    --rouge: #E63946;
-    --vert: #2D9E5F;
-    --bleu: #3A86FF;
-    --jaune: #FFB703;
-  }
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --gold-dark: #9A7A2E;
+  --black: #0A0A0A;
+  --black2: #141414;
+  --black3: #1E1E1E;
+  --white: #FFFFFF;
+  --gray: #888;
+  --rouge: #E63946;
+  --vert: #27AE60;
+  --bleu: #3A86FF;
+  --jaune: #F39C12;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--black) 0%, var(--black2) 50%, #1a1500 100%);
+  border-bottom: 2px solid var(--gold);
+  padding: 36px 20px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content:'';
+  position:absolute; top:-50%; left:-50%;
+  width:200%; height:200%;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.07) 0%, transparent 60%);
+  pointer-events:none;
+}
+.dots { position:absolute; width:70px; height:70px;
+  background-image: radial-gradient(circle, var(--gold) 1.5px, transparent 1.5px);
+  background-size: 10px 10px; opacity:0.35; }
+.dots.tr { top:12px; right:18px; }
+.dots.bl { bottom:12px; left:18px; }
+.header h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(3rem,8vw,6rem);
+  letter-spacing:6px; line-height:1;
+  color:var(--white);
+}
+.header h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(1.2rem,3vw,2rem);
+  letter-spacing:4px; color:var(--gold);
+  margin-top:4px;
+}
+.gold-line { width:80px; height:2px;
+  background: linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:14px auto 0; }
 
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Montserrat', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* PROGRESS BAR */
+.progress-wrap {
+  background: var(--black2);
+  border-bottom: 1px solid #222;
+  padding: 14px 20px;
+  text-align:center;
+}
+.progress-label {
+  font-size:0.78rem; letter-spacing:2px;
+  color:var(--gold); text-transform:uppercase;
+  margin-bottom:8px;
+}
+.progress-track {
+  max-width:500px; margin:0 auto;
+  height:4px; background:#2a2a2a; border-radius:2px;
+}
+.progress-fill {
+  height:100%; border-radius:2px;
+  background: linear-gradient(90deg,var(--gold-dark),var(--gold));
+  transition: width 0.4s ease;
+}
 
-  /* HEADER */
-  .header {
-    background: linear-gradient(135deg, var(--black) 0%, var(--black2) 40%, #1a1500 100%);
-    border-bottom: 2px solid var(--gold);
-    padding: 40px 20px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .dots-pattern {
-    position: absolute;
-    top: 10px; right: 20px;
-    width: 80px; height: 80px;
-    background-image: radial-gradient(circle, var(--gold) 1.5px, transparent 1.5px);
-    background-size: 10px 10px;
-    opacity: 0.4;
-  }
-  .dots-pattern.left { right: auto; left: 20px; bottom: 10px; top: auto; }
+/* PAGES */
+.page { display:none; }
+.page.active { display:block; }
 
-  .header h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    letter-spacing: 4px;
-    line-height: 1;
-    color: var(--white);
-  }
-  .header h1 span { color: var(--gold); }
-  .header p {
-    margin-top: 12px;
-    font-size: 0.95rem;
-    font-weight: 300;
-    color: #bbb;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .gold-line {
-    width: 80px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 16px auto;
-  }
+/* CONTAINER */
+.container { max-width:760px; margin:0 auto; padding:30px 20px 60px; }
 
-  /* CONTAINER */
-  .container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 30px 20px 60px;
-  }
+/* INSTRUCTIONS CARD */
+.instr-card {
+  background:var(--black3);
+  border:1px solid var(--gold-dark);
+  border-left:4px solid var(--gold);
+  border-radius:8px;
+  padding:22px 26px;
+  margin-bottom:28px;
+}
+.instr-card h3 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem; letter-spacing:2px;
+  color:var(--gold); margin-bottom:10px;
+}
+.instr-card p { font-size:0.86rem; line-height:1.7; color:#ccc; }
+.instr-card ul { margin:8px 0 0 18px; }
+.instr-card ul li { font-size:0.86rem; color:#ccc; margin-bottom:5px; line-height:1.5; }
 
-  /* INTRO CARD */
-  .intro-card {
-    background: var(--black3);
-    border: 1px solid var(--gold-dark);
-    border-left: 4px solid var(--gold);
-    border-radius: 8px;
-    padding: 24px 28px;
-    margin-bottom: 40px;
-  }
-  .intro-card h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    color: var(--gold);
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-  .intro-card p { font-size: 0.88rem; line-height: 1.7; color: #ccc; }
-  .intro-card ul { margin: 10px 0 0 18px; }
-  .intro-card ul li { font-size: 0.88rem; color: #ccc; margin-bottom: 4px; }
+/* QUESTION BLOCK */
+.q-block {
+  background:var(--black2);
+  border:1px solid #2a2a2a;
+  border-radius:10px;
+  padding:26px;
+  margin-bottom:20px;
+}
+.q-tag {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:0.85rem; letter-spacing:3px;
+  color:var(--gold); margin-bottom:6px;
+}
+.q-text {
+  font-size:0.9rem; font-weight:600;
+  color:var(--white); margin-bottom:20px;
+  line-height:1.5;
+}
 
-  /* SECTION TITLES */
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 3px;
-    color: var(--gold);
-    text-align: center;
-    margin: 40px 0 6px;
-  }
-  .section-subtitle {
-    text-align: center;
-    font-size: 0.82rem;
-    color: var(--gray);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-  }
+/* DRAG AND DROP */
+.drag-list { display:flex; flex-direction:column; gap:10px; }
+.drag-item {
+  display:flex; align-items:center; gap:14px;
+  background:var(--black3);
+  border:1px solid #333;
+  border-radius:8px;
+  padding:14px 16px;
+  cursor:grab;
+  transition:all 0.2s;
+  user-select:none;
+}
+.drag-item:active { cursor:grabbing; }
+.drag-item.dragging { opacity:0.4; border-color:var(--gold); }
+.drag-item.drag-over { border-color:var(--gold); background:#1a1500; transform:scale(1.01); }
+.drag-rank {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem; color:var(--gold);
+  min-width:28px; text-align:center;
+}
+.drag-handle {
+  color:#555; font-size:1.1rem;
+  flex-shrink:0;
+}
+.drag-text { flex:1; font-size:0.86rem; color:#ddd; line-height:1.4; }
 
-  /* QUESTION BLOCK */
-  .question-block {
-    background: var(--black2);
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
-    padding: 24px;
-    margin-bottom: 20px;
-    transition: border-color 0.3s;
-  }
-  .question-block.valid { border-color: var(--gold-dark); }
-  .question-block.error { border-color: #E63946; }
+/* PART TRANSITION */
+.part-transition {
+  text-align:center; padding:40px 20px;
+}
+.part-transition h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem; letter-spacing:3px;
+  color:var(--gold); margin-bottom:14px;
+}
+.part-transition p {
+  font-size:0.95rem; color:#ccc;
+  max-width:480px; margin:0 auto 30px;
+  line-height:1.7;
+}
 
-  .question-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .question-text {
-    font-size: 0.85rem;
-    color: #aaa;
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
+/* PART 2 SLIDERS */
+.pair-block {
+  background:var(--black2);
+  border:1px solid #2a2a2a;
+  border-radius:10px;
+  padding:22px 24px;
+  margin-bottom:14px;
+}
+.pair-nums-top {
+  display:flex; justify-content:space-between;
+  font-size:0.72rem; color:#555; margin-bottom:4px;
+  padding:0 2px;
+}
+.pair-row { display:flex; align-items:center; gap:14px; }
+.pair-label {
+  font-size:0.84rem; font-weight:700; color:#ddd;
+  width:140px; flex-shrink:0; text-align:right;
+}
+.pair-label.right { text-align:left; }
+.pair-score {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.5rem; color:var(--gold);
+  min-width:26px; text-align:center;
+}
+.pair-score.dim { color:#333; }
+.slider-wrap { flex:1; }
+input[type="range"] {
+  -webkit-appearance:none; width:100%; height:6px;
+  background: linear-gradient(90deg, var(--gold) var(--pct,50%), #2a2a2a var(--pct,50%));
+  border-radius:3px; outline:none; cursor:pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:22px; height:22px;
+  border-radius:50%; background:var(--gold);
+  border:3px solid var(--black);
+  box-shadow:0 0 8px rgba(201,168,76,0.5); cursor:pointer;
+}
 
-  /* RANKING CHOICES (Part 1) */
-  .choices-instruction {
-    font-size: 0.78rem;
-    color: var(--gold);
-    background: rgba(201,168,76,0.08);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 6px;
-    padding: 8px 12px;
-    margin-bottom: 14px;
-    text-align: center;
-  }
-  .choices-grid { display: flex; flex-direction: column; gap: 8px; }
+/* NAVIGATION BUTTONS */
+.nav-wrap {
+  display:flex; justify-content:space-between;
+  align-items:center; margin-top:30px; gap:14px;
+}
+.btn-prev, .btn-next, .btn-submit {
+  font-family:'Bebas Neue',sans-serif;
+  letter-spacing:2px; border-radius:6px;
+  cursor:pointer; transition:all 0.3s;
+  border:none; padding:16px 36px; font-size:1.1rem;
+}
+.btn-prev {
+  background:transparent;
+  border:2px solid #444; color:#888;
+}
+.btn-prev:hover { border-color:var(--gold); color:var(--gold); }
+.btn-next, .btn-submit {
+  background: linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));
+  color:var(--black);
+  box-shadow:0 4px 20px rgba(201,168,76,0.25);
+}
+.btn-next:hover, .btn-submit:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(201,168,76,0.4);
+}
+.btn-spacer { flex:1; }
 
-  .choice-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--black3);
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    gap: 12px;
-  }
-  .choice-item:hover { border-color: var(--gold-dark); background: #1a1500; }
-  .choice-item.selected-6 { border-color: var(--gold); background: rgba(201,168,76,0.12); }
-  .choice-item.selected-4 { border-color: #8a7a3e; background: rgba(201,168,76,0.07); }
-  .choice-item.selected-2 { border-color: #555; background: rgba(201,168,76,0.03); }
-  .choice-item.selected-0 { border-color: #333; opacity: 0.6; }
+/* CONFETTI PAGE */
+#page-confetti {
+  min-height:100vh;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px 20px;
+  position:relative;
+  overflow:hidden;
+}
+#page-confetti.active { display:flex; }
+.confetti-canvas {
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none; z-index:0;
+}
+.confetti-content { position:relative; z-index:1; }
+.confetti-content h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2rem,6vw,4rem);
+  letter-spacing:4px; color:var(--gold);
+  margin-bottom:16px;
+}
+.confetti-content p {
+  font-size:1rem; color:#ccc;
+  max-width:450px; margin:0 auto;
+  line-height:1.7;
+}
+.confetti-emoji { font-size:3rem; margin-bottom:16px; }
 
-  .choice-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    color: var(--gold);
-    min-width: 24px;
-  }
-  .choice-text {
-    flex: 1;
-    font-size: 0.85rem;
-    color: #ddd;
-    line-height: 1.4;
-  }
-  .choice-score {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    min-width: 36px;
-    text-align: right;
-    color: transparent;
-  }
-  .choice-item.selected-6 .choice-score { color: var(--gold); }
-  .choice-item.selected-4 .choice-score { color: #a08030; }
-  .choice-item.selected-2 .choice-score { color: #666; }
-  .choice-item.selected-0 .choice-score { color: #444; }
+/* RESULTS */
+#page-results { display:none; }
+#page-results.active { display:block; }
 
-  .rank-indicator {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: transparent;
-    text-transform: uppercase;
-  }
-  .choice-item.selected-6 .rank-indicator { color: var(--gold); }
-  .choice-item.selected-4 .rank-indicator { color: #a08030; }
-  .choice-item.selected-2 .rank-indicator { color: #666; }
-  .choice-item.selected-0 .rank-indicator { color: #444; }
+.result-hero {
+  text-align:center; padding:40px 20px 20px;
+}
+.result-hero h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.6rem,4vw,2.8rem);
+  letter-spacing:4px;
+}
 
-  .progress-bar {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 14px;
-  }
-  .progress-pip {
-    flex: 1;
-    height: 4px;
-    background: #2a2a2a;
-    border-radius: 2px;
-    transition: background 0.3s;
-  }
-  .progress-pip.filled { background: var(--gold); }
+.color-winner {
+  max-width:480px; margin:20px auto;
+  border-radius:14px; padding:28px;
+  text-align:center; position:relative; overflow:hidden;
+}
+.color-winner::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.12),transparent);
+}
+.color-winner h3 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.8rem; letter-spacing:5px; color:white;
+}
+.color-winner .score-big {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem; color:white; line-height:1;
+}
+.color-winner .score-lbl {
+  font-size:0.75rem; letter-spacing:2px;
+  text-transform:uppercase; color:rgba(255,255,255,0.65);
+}
 
-  .total-display {
-    text-align: right;
-    font-size: 0.78rem;
-    color: var(--gray);
-    margin-top: 8px;
-  }
-  .total-display.ok { color: var(--gold); }
-  .total-display.over { color: #E63946; }
+/* CLASSEMENT */
+.classement-block {
+  max-width:480px; margin:16px auto;
+  background:var(--black2);
+  border:1px solid var(--gold-dark);
+  border-radius:12px; padding:20px 24px;
+}
+.classement-block h3 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem; letter-spacing:2px;
+  color:var(--gold); margin-bottom:14px;
+  text-align:center;
+}
+.rank-row {
+  display:flex; align-items:center; gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid #1e1e1e;
+}
+.rank-row:last-child { border-bottom:none; }
+.rank-n {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem; color:var(--gold); min-width:34px;
+}
+.rank-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+.rank-name {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem; letter-spacing:2px; flex:1;
+}
+.rank-pts {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem; color:var(--gold);
+}
 
-  /* PART 2 - SLIDERS */
-  .pair-block {
-    background: var(--black2);
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 14px;
-    transition: border-color 0.3s;
-  }
-  .pair-block.valid { border-color: var(--gold-dark); }
+/* GRAPH */
+.graph-block {
+  max-width:600px; margin:20px auto;
+  background:var(--black2);
+  border:1px solid var(--gold-dark);
+  border-radius:12px; padding:24px;
+  text-align:center;
+}
+.graph-block h3 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem; letter-spacing:2px;
+  color:var(--gold); margin-bottom:16px;
+}
+canvas#chart { max-width:100%; }
 
-  .pair-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .pair-label {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #ddd;
-    width: 160px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-  .pair-label.right { text-align: left; }
-  .pair-score {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    color: var(--gold);
-    min-width: 28px;
-    text-align: center;
-  }
-  .pair-score.dim { color: #444; }
+/* EXPORT BUTTONS */
+.export-wrap {
+  text-align:center; margin:24px auto;
+  max-width:600px;
+}
+.export-wrap p {
+  font-size:0.8rem; color:var(--gray);
+  letter-spacing:1px; text-transform:uppercase;
+  margin-bottom:12px;
+}
+.export-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-export {
+  background:var(--black3);
+  border:1px solid var(--gold-dark);
+  color:var(--gold);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1rem; letter-spacing:2px;
+  padding:12px 24px; border-radius:6px;
+  cursor:pointer; transition:all 0.3s;
+}
+.btn-export:hover { background:var(--gold); color:var(--black); border-color:var(--gold); }
 
-  .slider-wrap { flex: 1; }
-  input[type="range"] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(90deg, var(--gold) var(--pct), #2a2a2a var(--pct));
-    border-radius: 3px;
-    outline: none;
-    cursor: pointer;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--gold);
-    border: 3px solid var(--black);
-    box-shadow: 0 0 8px rgba(201,168,76,0.5);
-    cursor: pointer;
-  }
-  .slider-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.65rem;
-    color: #555;
-    margin-top: 4px;
-    padding: 0 2px;
-  }
+.btn-restart {
+  display:block; margin:10px auto 0;
+  background:transparent;
+  border:1px solid #333; color:#555;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:0.9rem; letter-spacing:2px;
+  padding:10px 24px; border-radius:6px;
+  cursor:pointer; transition:all 0.3s;
+}
+.btn-restart:hover { border-color:#666; color:#888; }
 
-  .pair-nums {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.7rem;
-    color: var(--gray);
-    margin-top: 2px;
-    padding: 0 2px;
-  }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.fade-up { animation:fadeUp 0.5s ease forwards; }
 
-  /* DIVIDER */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 40px 0;
-  }
-  .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dark)); }
-  .divider-line.rev { background: linear-gradient(90deg, var(--gold-dark), transparent); }
-  .divider-icon {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    color: var(--gold);
-  }
-
-  /* SUBMIT BUTTON */
-  .submit-wrap { text-align: center; margin-top: 40px; }
-  .btn-submit {
-    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
-    color: var(--black);
-    border: none;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 3px;
-    padding: 18px 50px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 24px rgba(201,168,76,0.3);
-  }
-  .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(201,168,76,0.5);
-  }
-  .btn-submit:active { transform: translateY(0); }
-
-  .error-msg {
-    color: #E63946;
-    font-size: 0.82rem;
-    margin-top: 14px;
-    display: none;
-  }
-
-  /* RESULTS */
-  #results { display: none; }
-
-  .result-header {
-    text-align: center;
-    padding: 40px 20px 0;
-  }
-  .result-header h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.8rem, 5vw, 3rem);
-    letter-spacing: 4px;
-    color: var(--white);
-  }
-
-  .color-winner {
-    margin: 30px auto;
-    max-width: 500px;
-    border-radius: 12px;
-    padding: 30px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .color-winner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0.15;
-    background: radial-gradient(ellipse, white, transparent);
-  }
-  .color-winner h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    letter-spacing: 4px;
-    color: white;
-  }
-  .color-winner .score-big {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    color: white;
-    line-height: 1;
-  }
-  .color-winner .score-label {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.7);
-  }
-
-  /* SCORES GRID */
-  .scores-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin: 30px 0;
-  }
-  @media(max-width:500px) { .scores-grid { grid-template-columns: 1fr; } }
-
-  .score-card {
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    border: 2px solid transparent;
-  }
-  .score-card.winner { border-color: white; }
-  .score-card h4 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 3px;
-    color: white;
-  }
-  .score-card .pts {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    color: white;
-    line-height: 1;
-  }
-  .score-card .rank-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.2);
-    border-radius: 20px;
-    padding: 2px 12px;
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: white;
-    margin-top: 4px;
-  }
-
-  /* GRAPH */
-  .graph-section {
-    background: var(--black2);
-    border: 1px solid var(--gold-dark);
-    border-radius: 12px;
-    padding: 30px;
-    margin: 30px 0;
-    text-align: center;
-  }
-  .graph-section h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
-  canvas#chart { max-width: 100%; }
-
-  /* RANKING TABLE */
-  .ranking-section {
-    background: var(--black2);
-    border: 1px solid var(--gold-dark);
-    border-radius: 12px;
-    padding: 24px;
-    margin: 20px 0;
-  }
-  .ranking-section h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    color: var(--gold);
-    margin-bottom: 16px;
-  }
-  .rank-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 10px 0;
-    border-bottom: 1px solid #1e1e1e;
-  }
-  .rank-row:last-child { border-bottom: none; }
-  .rank-n {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: var(--gold);
-    min-width: 36px;
-  }
-  .rank-color-dot {
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .rank-color-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    flex: 1;
-  }
-  .rank-pts {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    color: var(--gold);
-  }
-
-  .btn-restart {
-    background: transparent;
-    border: 2px solid var(--gold);
-    color: var(--gold);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    padding: 14px 36px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: all 0.3s;
-  }
-  .btn-restart:hover { background: var(--gold); color: var(--black); }
-
-  /* MOBILE */
-  @media(max-width:600px) {
-    .pair-label { width: 100px; font-size: 0.78rem; }
-    .pair-score { font-size: 1.2rem; min-width: 22px; }
-  }
-
-  /* ANIMATION */
-  @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-  .fade-in { animation: fadeIn 0.5s ease forwards; }
+@media(max-width:600px) {
+  .pair-label { width:90px; font-size:0.75rem; }
+  .pair-score { font-size:1.2rem; min-width:20px; }
+}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="dots-pattern"></div>
-  <div class="dots-pattern left"></div>
-  <h1>BE SUCCESS<br><span>EXPERIENCE</span></h1>
+  <div class="dots tr"></div>
+  <div class="dots bl"></div>
+  <h1>BE SUCCESS</h1>
+  <h2>Test de Personnalité</h2>
   <div class="gold-line"></div>
-  <p>Test de Personnalité — Découvre ta couleur dominante</p>
 </div>
 
-<div id="test-form">
-<div class="container">
-
-  <!-- INTRO -->
-  <div class="intro-card">
-    <h2>📋 Comment ça marche ?</h2>
-    <p>Ce test comporte <strong>deux parties</strong>. Lis chaque instruction attentivement avant de répondre.</p>
-    <ul>
-      <li><strong>Partie 1 :</strong> Pour chaque groupe de 4 affirmations, attribue les scores <strong>6 – 4 – 2 – 0</strong> selon ce qui te décrit le mieux. Clique sur les réponses dans l'ordre de ta préférence.</li>
-      <li><strong>Partie 2 :</strong> Pour chaque paire, répartis <strong>4 points</strong> entre les deux adjectifs à l'aide du curseur.</li>
-    </ul>
-  </div>
-
-  <!-- PARTIE 1 -->
-  <div class="section-title">PARTIE 1</div>
-  <div class="section-subtitle">Attribue 6 – 4 – 2 – 0 à chaque groupe</div>
-
-  <div id="part1-questions"></div>
-
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-icon">✦ PARTIE 2 ✦</div>
-    <div class="divider-line rev"></div>
-  </div>
-
-  <div class="section-title">PARTIE 2</div>
-  <div class="section-subtitle">Répartis 4 points entre chaque paire d'adjectifs</div>
-
-  <div id="part2-questions"></div>
-
-  <div class="submit-wrap">
-    <button class="btn-submit" onclick="submitTest()">CALCULER MON PROFIL</button>
-    <div class="error-msg" id="error-msg">⚠️ Certaines questions sont incomplètes. Vérifie les sections encadrées en rouge.</div>
-  </div>
-
-</div>
+<div class="progress-wrap" id="progress-wrap">
+  <div class="progress-label" id="progress-label">Partie 1 – Question 1/8</div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
 </div>
 
-<!-- RESULTS -->
-<div id="results">
+<!-- ===== PAGES PARTIE 1 (A-H) ===== -->
+<div id="pages-container"></div>
+
+<!-- ===== TRANSITION PARTIE 1 → 2 ===== -->
+<div class="page" id="page-transition">
   <div class="container">
-    <div class="result-header fade-in">
+    <div class="part-transition fade-up">
+      <div style="font-size:3rem;margin-bottom:16px">🎉</div>
+      <h2>Bravo !</h2>
+      <p>Tu viens de compléter la première partie. Passe maintenant à la deuxième partie !</p>
+      <div class="nav-wrap" style="justify-content:center;">
+        <button class="btn-prev" onclick="goToPrev()">← Précédent</button>
+        <button class="btn-next" onclick="goToNext()">Partie 2 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PARTIE 2 ===== -->
+<div class="page" id="page-part2">
+  <div class="container">
+    <div class="instr-card">
+      <h3>📋 Comment ça marche – Partie 2</h3>
+      <p>Pour chaque paire d'adjectifs, utilise le curseur pour répartir <strong>4 points</strong> entre les deux :</p>
+      <ul>
+        <li><strong>4 / 0</strong> → Je suis beaucoup l'un, pas du tout l'autre</li>
+        <li><strong>3 / 1</strong> → Je suis assez l'un, un peu l'autre</li>
+        <li><strong>2 / 2</strong> → Je suis autant l'un que l'autre</li>
+        <li><strong>1 / 3</strong> → Je suis un peu l'un, assez l'autre</li>
+        <li><strong>0 / 4</strong> → Pas du tout l'un, beaucoup l'autre</li>
+      </ul>
+    </div>
+    <div id="part2-content"></div>
+    <div class="nav-wrap">
+      <button class="btn-prev" onclick="goToPrev()">← Précédent</button>
+      <div class="btn-spacer"></div>
+      <button class="btn-submit" onclick="submitTest()">Calculer mon profil ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONFETTI ===== -->
+<div id="page-confetti">
+  <canvas class="confetti-canvas" id="confetti-canvas"></canvas>
+  <div class="confetti-content fade-up">
+    <div class="confetti-emoji">✨🌟✨</div>
+    <h2>Merci d'avoir répondu !</h2>
+    <p>Tu as terminé le test de personnalité BE SUCCESS.<br>Découvre maintenant ta couleur dominante et ton profil complet !</p>
+    <div style="margin-top:28px;">
+      <button class="btn-next" onclick="showResults()" style="font-size:1.2rem;padding:18px 44px;">Voir mes résultats →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESULTS ===== -->
+<div id="page-results">
+  <div id="results-content" class="container">
+    <div class="result-hero fade-up">
       <h2>TON PROFIL DE PERSONNALITÉ</h2>
       <div class="gold-line"></div>
     </div>
-
-    <div id="winner-card" class="color-winner fade-in"></div>
-
-    <div class="scores-grid fade-in" id="scores-grid"></div>
-
-    <div class="graph-section fade-in">
-      <h3>📊 TON GRAPHIQUE DE PERSONNALITÉ</h3>
-      <canvas id="chart" width="600" height="400"></canvas>
+    <div id="winner-card" class="color-winner fade-up"></div>
+    <div id="classement" class="classement-block fade-up"></div>
+    <div class="graph-block fade-up">
+      <h3>📊 Ton graphique</h3>
+      <canvas id="chart" width="520" height="320"></canvas>
     </div>
-
-    <div class="ranking-section fade-in">
-      <h3>🏆 MON CLASSEMENT FINAL</h3>
-      <div id="ranking-list"></div>
-    </div>
-
-    <div style="text-align:center;">
+    <div class="export-wrap fade-up">
+      <p>Partage ou sauvegarde tes résultats</p>
+      <div class="export-btns">
+        <button class="btn-export" onclick="downloadImage()">📷 Télécharger en image</button>
+        <button class="btn-export" onclick="shareEmail()">📧 Envoyer par mail</button>
+      </div>
       <button class="btn-restart" onclick="restartTest()">↩ Refaire le test</button>
     </div>
   </div>
 </div>
 
 <script>
-// =============================================
+// ============================================================
 // DATA
-// =============================================
-
+// ============================================================
 const part1Questions = [
-  {
-    id: 'A',
-    text: "Quand je travaille sur un projet professionnel avec d'autres leaders que je connais peu, j'ai tendance à :",
-    items: [
-      { num: 1, text: "Être emballé et établir de bonnes relations de travail avec chacun." },
-      { num: 2, text: "Discuter de toutes les possibilités sans imposer mon opinion." },
-      { num: 3, text: "Prendre les rênes et se concentrer sur obtenir des résultats." },
-      { num: 4, text: "Être logique sur le déroulement et bien décortiquer la tâche avant de démarrer." }
-    ]
-  },
-  {
-    id: 'B',
-    text: "Quand je suis dans un environnement social, mon comportement est :",
-    items: [
-      { num: 5, text: "Amical, chaleureux et créatif." },
-      { num: 6, text: "Extraverti, fun et énergique." },
-      { num: 7, text: "Confiant et dans le contrôle." },
-      { num: 8, text: "Silencieux, réservé et réfléchi." }
-    ]
-  },
-  {
-    id: 'C',
-    text: "Je déteste quand la personne avec qui je suis en couple est :",
-    items: [
-      { num: 9, text: "Indécise et timide." },
-      { num: 10, text: "Tête en l'air, en retard et endormi." },
-      { num: 11, text: "Ennuyeux et trop sérieux." },
-      { num: 12, text: "Indifférent, matérialiste et sans émotions." }
-    ]
-  },
-  {
-    id: 'D',
-    text: "Quand quelque chose me dérange émotionnellement, j'ai tendance à :",
-    items: [
-      { num: 13, text: "Vouloir parler et exprimer mes émotions." },
-      { num: 14, text: "Ignorer et me concentrer sur quelque chose de plus important." },
-      { num: 15, text: "Sortir m'amuser pour m'aider à oublier le problème, je m'en occuperai plus tard." },
-      { num: 16, text: "Faire quelque chose d'autre pour éviter de me retrouver dans une situation où je dois montrer et exposer mes émotions." }
-    ]
-  },
-  {
-    id: 'E',
-    text: "Quand je suis dans une discussion professionnelle, je veux que les gens me voient comme :",
-    items: [
-      { num: 17, text: "Créatif, un bon soutien et utile." },
-      { num: 18, text: "Détaillé, logique et dans le contrôle." },
-      { num: 19, text: "Énergique, optimiste et fun." },
-      { num: 20, text: "Fonceur, exigeant et confiant." }
-    ]
-  },
-  {
-    id: 'F',
-    text: "Quand il s'agit de respecter des délais dans ma vie professionnelle, je me dis que :",
-    items: [
-      { num: 21, text: "Les tâches doivent être faites maintenant." },
-      { num: 22, text: "Je vais faire de mon mieux pour respecter les délais." },
-      { num: 23, text: "Les délais me mettent la pression." },
-      { num: 24, text: "Ça doit être fait avec précision et dans les temps." }
-    ]
-  },
-  {
-    id: 'G',
-    text: "J'adore donner l'impression que je suis :",
-    items: [
-      { num: 25, text: "Fonceur, orienté objectif et confiant." },
-      { num: 26, text: "Très intelligent, efficace et détaillé." },
-      { num: 27, text: "Très sociable, marrant et spontané." },
-      { num: 28, text: "Soigneux, créatif et impliqué." }
-    ]
-  },
-  {
-    id: 'H',
-    text: "Quand j'ai du temps libre, j'aime :",
-    items: [
-      { num: 29, text: "Faire quelque chose autour de la maison ou me rattraper sur certaines lectures." },
-      { num: 30, text: "Sortir et faire quelque chose d'amusant." },
-      { num: 31, text: "Aller aider les autres bénévolement ou faire quelque chose de créatif." },
-      { num: 32, text: "Faire quelque chose d'extravagant en récompense de tous mes efforts." }
-    ]
-  }
+  { id:'A', items:[
+    {num:1, text:"Être emballé et établir de bonnes relations de travail avec chacun."},
+    {num:2, text:"Discuter de toutes les possibilités sans imposer mon opinion."},
+    {num:3, text:"Prendre les rênes et se concentrer sur obtenir des résultats."},
+    {num:4, text:"Être logique sur le déroulement et bien décortiquer la tâche avant de démarrer."}
+  ], ctx:"Quand je travaille sur un projet professionnel avec d'autres leaders que je connais peu, j'ai tendance à :"},
+  { id:'B', items:[
+    {num:5, text:"Amical, chaleureux et créatif."},
+    {num:6, text:"Extraverti, fun et énergique."},
+    {num:7, text:"Confiant et dans le contrôle."},
+    {num:8, text:"Silencieux, réservé et réfléchi."}
+  ], ctx:"Quand je suis dans un environnement social, mon comportement est :"},
+  { id:'C', items:[
+    {num:9, text:"Indécise et timide."},
+    {num:10, text:"Tête en l'air, en retard et endormi."},
+    {num:11, text:"Ennuyeux et trop sérieux."},
+    {num:12, text:"Indifférent, matérialiste et sans émotions."}
+  ], ctx:"Je déteste quand la personne avec qui je suis en couple est :"},
+  { id:'D', items:[
+    {num:13, text:"Vouloir parler et exprimer mes émotions."},
+    {num:14, text:"Ignorer et me concentrer sur quelque chose de plus important."},
+    {num:15, text:"Sortir m'amuser pour m'aider à oublier le problème, je m'en occuperai plus tard."},
+    {num:16, text:"Faire quelque chose d'autre pour éviter de me retrouver dans une situation où je dois montrer et exposer mes émotions."}
+  ], ctx:"Quand quelque chose me dérange émotionnellement, j'ai tendance à :"},
+  { id:'E', items:[
+    {num:17, text:"Créatif, un bon soutien et utile."},
+    {num:18, text:"Détaillé, logique et dans le contrôle."},
+    {num:19, text:"Énergique, optimiste et fun."},
+    {num:20, text:"Fonceur, exigeant et confiant."}
+  ], ctx:"Quand je suis dans une discussion professionnelle, je veux que les gens me voient comme :"},
+  { id:'F', items:[
+    {num:21, text:"Les tâches doivent être faites maintenant."},
+    {num:22, text:"Je vais faire de mon mieux pour respecter les délais."},
+    {num:23, text:"Les délais me mettent la pression."},
+    {num:24, text:"Ça doit être fait avec précision et dans les temps."}
+  ], ctx:"Quand il s'agit de respecter des délais dans ma vie professionnelle, je me dis que :"},
+  { id:'G', items:[
+    {num:25, text:"Fonceur, orienté objectif et confiant."},
+    {num:26, text:"Très intelligent, efficace et détaillé."},
+    {num:27, text:"Très sociable, marrant et spontané."},
+    {num:28, text:"Soigneux, créatif et impliqué."}
+  ], ctx:"J'adore donner l'impression que je suis :"},
+  { id:'H', items:[
+    {num:29, text:"Faire quelque chose autour de la maison ou me rattraper sur certaines lectures."},
+    {num:30, text:"Sortir et faire quelque chose d'amusant."},
+    {num:31, text:"Aller aider les autres bénévolement ou faire quelque chose de créatif."},
+    {num:32, text:"Faire quelque chose d'extravagant en récompense de tous mes efforts."}
+  ], ctx:"Quand j'ai du temps libre, j'aime :"}
 ];
 
-// Pairs for part 2: [num1, label1, num2, label2]
 const part2Pairs = [
-  [33, "Sociable", 34, "Empathique"],
-  [35, "Analyse longtemps avant d'agir", 36, "Fonceur"],
-  [37, "Tête en l'air", 38, "Déterminé"],
-  [39, "Réaliste", 40, "Rêveur"],
-  [41, "Challengeur", 42, "Préfère travailler en équipe"],
-  [43, "Rationnel", 44, "Émotionnel"],
-  [45, "Introverti", 46, "Extraverti"],
-  [47, "Ponctuel", 48, "Facilement en retard"],
-  [49, "Follower (je suis)", 50, "Leader (on me suit)"],
-  [51, "Décisif", 52, "Sensible"],
-  [53, "Drôle", 54, "Sérieux"],
-  [55, "Fuis la confrontation", 56, "Aime la confrontation"]
+  [33,"Sociable",34,"Empathique"],
+  [35,"Analyse longtemps avant d'agir",36,"Fonceur"],
+  [37,"Tête en l'air",38,"Déterminé"],
+  [39,"Réaliste",40,"Rêveur"],
+  [41,"Challengeur",42,"Préfère travailler en équipe"],
+  [43,"Rationnel",44,"Émotionnel"],
+  [45,"Introverti",46,"Extraverti"],
+  [47,"Ponctuel",48,"Facilement en retard"],
+  [49,"Follower (je suis)",50,"Leader (on me suit)"],
+  [51,"Décisif",52,"Sensible"],
+  [53,"Drôle",54,"Sérieux"],
+  [55,"Fuis la confrontation",56,"Aime la confrontation"]
 ];
-
-// Score mapping: question number → color
-// VERT questions: 2,5,12,13,17,23,28,31,34,42,44,49,52,55
-// JAUNE questions: 11,15,19,22,27,30,33,37,40,46,48,53
-// BLEU questions:  10,16,18,24,26,29,35,39,43,45,47,54
-// ROUGE questions: 14,20,21,25,32,36,38,41,50,51,56
 
 const colorMap = {
-  2:'vert', 5:'vert', 12:'vert', 13:'vert', 17:'vert', 23:'vert',
-  28:'vert', 31:'vert', 34:'vert', 42:'vert', 44:'vert', 49:'vert', 52:'vert', 55:'vert',
-  11:'jaune', 15:'jaune', 19:'jaune', 22:'jaune', 27:'jaune', 30:'jaune',
-  33:'jaune', 37:'jaune', 40:'jaune', 46:'jaune', 48:'jaune', 53:'jaune',
-  10:'bleu', 16:'bleu', 18:'bleu', 24:'bleu', 26:'bleu', 29:'bleu',
-  35:'bleu', 39:'bleu', 43:'bleu', 45:'bleu', 47:'bleu', 54:'bleu',
-  14:'rouge', 20:'rouge', 21:'rouge', 25:'rouge', 32:'rouge', 36:'rouge',
-  38:'rouge', 41:'rouge', 50:'rouge', 51:'rouge', 56:'rouge'
+  2:'vert',5:'vert',12:'vert',13:'vert',17:'vert',23:'vert',
+  28:'vert',31:'vert',34:'vert',42:'vert',44:'vert',49:'vert',52:'vert',55:'vert',
+  11:'jaune',15:'jaune',19:'jaune',22:'jaune',27:'jaune',30:'jaune',
+  33:'jaune',37:'jaune',40:'jaune',46:'jaune',48:'jaune',53:'jaune',
+  10:'bleu',16:'bleu',18:'bleu',24:'bleu',26:'bleu',29:'bleu',
+  35:'bleu',39:'bleu',43:'bleu',45:'bleu',47:'bleu',54:'bleu',
+  14:'rouge',20:'rouge',21:'rouge',25:'rouge',32:'rouge',36:'rouge',
+  38:'rouge',41:'rouge',50:'rouge',51:'rouge',56:'rouge'
 };
 
-const scores = [6, 4, 2, 0];
-const rankLabels = ['1er choix', '2e choix', '3e choix', '4e choix'];
+const colorMeta = {
+  rouge:{label:'ROUGE',hex:'#E63946',bg:'linear-gradient(135deg,#7a0000,#C0392B,#E74C3C)'},
+  vert: {label:'VERT', hex:'#27AE60',bg:'linear-gradient(135deg,#0d4a22,#1e8449,#27AE60)'},
+  bleu: {label:'BLEU', hex:'#3A86FF',bg:'linear-gradient(135deg,#0a1f6e,#1a56db,#3A86FF)'},
+  jaune:{label:'JAUNE',hex:'#F39C12',bg:'linear-gradient(135deg,#6b4000,#d68910,#F39C12)'}
+};
+
+const scores = [6,4,2,0];
 
 // State
-let p1State = {}; // { 'A': [num, num, num, num] } ordered clicks
-let p2State = {}; // { pairIndex: sliderValue (0-4) }
+let p1Orders = {}; // {A: [num,num,num,num]} — order = rank
+let p2State = {};  // {idx: sliderVal}
+let currentPage = 0;
+let allPages = []; // list of page element ids in order
 
-// =============================================
-// BUILD PART 1
-// =============================================
-function buildPart1() {
-  const container = document.getElementById('part1-questions');
-  part1Questions.forEach(q => {
-    p1State[q.id] = [];
-    const block = document.createElement('div');
-    block.className = 'question-block';
-    block.id = `q-${q.id}`;
+// ============================================================
+// BUILD
+// ============================================================
+function buildAll() {
+  const container = document.getElementById('pages-container');
 
-    block.innerHTML = `
-      <div class="question-label">QUESTION ${q.id}</div>
-      <div class="question-text">${q.text}</div>
-      <div class="choices-instruction">Clique dans l'ordre de préférence : 1er clic = 6pts, 2e = 4pts, 3e = 2pts, 4e = 0pt</div>
-      <div class="progress-bar">
-        <div class="progress-pip" id="pip-${q.id}-0"></div>
-        <div class="progress-pip" id="pip-${q.id}-1"></div>
-        <div class="progress-pip" id="pip-${q.id}-2"></div>
-        <div class="progress-pip" id="pip-${q.id}-3"></div>
-      </div>
-      <div class="choices-grid" id="choices-${q.id}"></div>
-      <div class="total-display" id="total-${q.id}">Total : 0 / 12</div>
-    `;
+  // Part 1: one page per question
+  part1Questions.forEach((q, qi) => {
+    p1Orders[q.id] = [...q.items.map(i=>i.num)]; // default order
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.id = `page-q-${q.id}`;
 
-    container.appendChild(block);
+    const instrHtml = qi === 0 ? `
+      <div class="instr-card">
+        <h3>📋 Comment ça marche – Partie 1</h3>
+        <p>Classe les 4 affirmations selon ce qui te décrit le mieux en ce moment.<br>
+        Mets <strong>en 1er</strong> celle qui te ressemble le plus, en <strong>2ème</strong> celle qui te ressemble assez, en <strong>3ème</strong> un peu, et en <strong>4ème</strong> celle qui te ressemble le moins.<br>
+        <strong>Glisse et dépose</strong> les phrases pour les réordonner.</p>
+      </div>` : '';
 
-    const grid = block.querySelector(`#choices-${q.id}`);
-    q.items.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'choice-item';
-      div.id = `item-${item.num}`;
-      div.innerHTML = `
-        <span class="choice-num">${item.num}.</span>
-        <span class="choice-text">${item.text}</span>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-          <span class="choice-score">—</span>
-          <span class="rank-indicator">—</span>
+    page.innerHTML = `
+      <div class="container">
+        ${instrHtml}
+        <div class="q-block">
+          <div class="q-tag">Partie 1 – Question ${qi+1}/8</div>
+          <div class="q-text">${q.ctx}</div>
+          <div class="drag-list" id="drag-${q.id}"></div>
         </div>
-      `;
-      div.addEventListener('click', () => handleP1Click(q.id, item.num));
-      grid.appendChild(div);
-    });
-  });
-}
-
-function handleP1Click(qId, itemNum) {
-  const arr = p1State[qId];
-  const idx = arr.indexOf(itemNum);
-
-  if (idx !== -1) {
-    // Deselect: remove this and all after
-    p1State[qId] = arr.slice(0, idx);
-  } else {
-    if (arr.length < 4) {
-      p1State[qId] = [...arr, itemNum];
-    }
-  }
-  renderP1Question(qId);
-}
-
-function renderP1Question(qId) {
-  const arr = p1State[qId];
-  const q = part1Questions.find(q => q.id === qId);
-
-  q.items.forEach(item => {
-    const div = document.getElementById(`item-${item.num}`);
-    const rankIdx = arr.indexOf(item.num);
-    div.className = 'choice-item';
-    const scoreEl = div.querySelector('.choice-score');
-    const rankEl = div.querySelector('.rank-indicator');
-
-    if (rankIdx === -1) {
-      scoreEl.textContent = '—';
-      rankEl.textContent = '—';
-    } else {
-      div.classList.add(`selected-${scores[rankIdx]}`);
-      scoreEl.textContent = scores[rankIdx];
-      rankEl.textContent = rankLabels[rankIdx];
-    }
-  });
-
-  // Progress pips
-  for (let i = 0; i < 4; i++) {
-    const pip = document.getElementById(`pip-${qId}-${i}`);
-    pip.className = 'progress-pip' + (i < arr.length ? ' filled' : '');
-  }
-
-  // Total
-  const total = arr.reduce((s, _, i) => s + scores[i], 0);
-  const totalEl = document.getElementById(`total-${qId}`);
-  const block = document.getElementById(`q-${qId}`);
-  totalEl.textContent = `Total : ${total} / 12`;
-  totalEl.className = 'total-display' + (arr.length === 4 ? ' ok' : '');
-  block.className = 'question-block' + (arr.length === 4 ? ' valid' : '');
-}
-
-// =============================================
-// BUILD PART 2
-// =============================================
-function buildPart2() {
-  const container = document.getElementById('part2-questions');
-
-  const intro = document.createElement('div');
-  intro.className = 'intro-card';
-  intro.style.marginBottom = '24px';
-  intro.innerHTML = `
-    <h2>ℹ️ Instructions Partie 2</h2>
-    <p>Pour chaque paire, tu dois répartir <strong>4 points</strong> entre les deux adjectifs :</p>
-    <ul>
-      <li><strong>4 / 0</strong> → Je suis beaucoup l'un, pas du tout l'autre</li>
-      <li><strong>3 / 1</strong> → Je suis assez l'un, un peu l'autre</li>
-      <li><strong>2 / 2</strong> → Je suis autant l'un que l'autre (ou indécis)</li>
-      <li><strong>1 / 3</strong> → Je suis un peu l'un, assez l'autre</li>
-      <li><strong>0 / 4</strong> → Pas du tout l'un, beaucoup l'autre</li>
-    </ul>
-  `;
-  container.appendChild(intro);
-
-  part2Pairs.forEach((pair, idx) => {
-    p2State[idx] = 2; // default 2/2
-
-    const [n1, l1, n2, l2] = pair;
-    const block = document.createElement('div');
-    block.className = 'pair-block valid';
-    block.id = `pair-${idx}`;
-
-    block.innerHTML = `
-      <div class="pair-row">
-        <div class="pair-label">${n1}. ${l1}</div>
-        <div class="pair-score" id="score-a-${idx}">2</div>
-        <div class="slider-wrap">
-          <input type="range" min="0" max="4" step="1" value="2" id="slider-${idx}"
-            style="--pct: 50%"
-            oninput="handleSlider(${idx}, this.value)">
-          <div class="pair-nums">
-            <span>4/0</span><span>3/1</span><span>2/2</span><span>1/3</span><span>0/4</span>
-          </div>
+        <div class="nav-wrap">
+          ${qi > 0 ? `<button class="btn-prev" onclick="goToPrev()">← Précédent</button>` : `<div></div>`}
+          <div class="btn-spacer"></div>
+          <button class="btn-next" onclick="goToNext()">Suivant →</button>
         </div>
-        <div class="pair-score dim" id="score-b-${idx}">2</div>
-        <div class="pair-label right">${n2}. ${l2}</div>
-      </div>
-    `;
-    container.appendChild(block);
-  });
-}
+      </div>`;
 
-function handleSlider(idx, val) {
-  val = parseInt(val);
-  p2State[idx] = val;
-  const a = val;
-  const b = 4 - val;
-  document.getElementById(`score-a-${idx}`).textContent = a;
-  document.getElementById(`score-a-${idx}`).className = 'pair-score' + (a === 0 ? ' dim' : '');
-  document.getElementById(`score-b-${idx}`).textContent = b;
-  document.getElementById(`score-b-${idx}`).className = 'pair-score' + (b === 0 ? ' dim' : '');
-  // Update gradient
-  const slider = document.getElementById(`slider-${idx}`);
-  slider.style.setProperty('--pct', (val / 4 * 100) + '%');
-}
-
-// =============================================
-// SUBMIT & CALCULATE
-// =============================================
-function submitTest() {
-  // Validate part 1
-  let valid = true;
-  part1Questions.forEach(q => {
-    const block = document.getElementById(`q-${q.id}`);
-    if (p1State[q.id].length < 4) {
-      block.classList.add('error');
-      valid = false;
-    } else {
-      block.classList.remove('error');
-    }
+    container.appendChild(page);
+    allPages.push(`page-q-${q.id}`);
   });
 
-  if (!valid) {
-    document.getElementById('error-msg').style.display = 'block';
-    document.querySelector('.error-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-  document.getElementById('error-msg').style.display = 'none';
+  // Build drag lists
+  part1Questions.forEach(q => renderDragList(q.id));
 
-  // Collect all scores
-  const allScores = {}; // num → score
-
-  // Part 1
-  part1Questions.forEach(q => {
-    q.items.forEach((item, i) => {
-      const rank = p1State[q.id].indexOf(item.num);
-      if (rank !== -1) allScores[item.num] = scores[rank];
-    });
-  });
+  // Transition page
+  allPages.push('page-transition');
 
   // Part 2
-  part2Pairs.forEach((pair, idx) => {
-    const val = p2State[idx];
-    allScores[pair[0]] = val;       // left gets slider value
-    allScores[pair[2]] = 4 - val;   // right gets remainder
-  });
-
-  // Sum by color
-  const totals = { rouge: 0, vert: 0, bleu: 0, jaune: 0 };
-  Object.entries(allScores).forEach(([num, score]) => {
-    const color = colorMap[parseInt(num)];
-    if (color) totals[color] += score;
-  });
-
-  showResults(totals);
+  allPages.push('page-part2');
+  buildPart2();
 }
 
-// =============================================
-// SHOW RESULTS
-// =============================================
-const colorMeta = {
-  rouge: { label: 'ROUGE', hex: '#C0392B', emoji: '🔴', bg: 'linear-gradient(135deg,#8B0000,#C0392B,#E74C3C)' },
-  vert:  { label: 'VERT',  hex: '#27AE60', emoji: '🟢', bg: 'linear-gradient(135deg,#1a5e35,#27AE60,#2ECC71)' },
-  bleu:  { label: 'BLEU',  hex: '#2980B9', emoji: '🔵', bg: 'linear-gradient(135deg,#1a3a5e,#2980B9,#3498DB)' },
-  jaune: { label: 'JAUNE', hex: '#F39C12', emoji: '🟡', bg: 'linear-gradient(135deg,#7a5000,#F39C12,#F1C40F)' }
-};
-
-function showResults(totals) {
-  document.getElementById('test-form').style.display = 'none';
-  document.getElementById('results').style.display = 'block';
-  window.scrollTo(0, 0);
-
-  const sorted = Object.entries(totals).sort((a, b) => b[1] - a[1]);
-  const [winnerKey, winnerScore] = sorted[0];
-  const meta = colorMeta[winnerKey];
-
-  // Winner card
-  document.getElementById('winner-card').style.background = meta.bg;
-  document.getElementById('winner-card').innerHTML = `
-    <div style="font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:8px">Ta couleur dominante</div>
-    <h3>${meta.emoji} ${meta.label}</h3>
-    <div class="score-big">${winnerScore}</div>
-    <div class="score-label">points</div>
-  `;
-
-  // Scores grid
-  const grid = document.getElementById('scores-grid');
-  grid.innerHTML = '';
-  sorted.forEach(([key, score], i) => {
-    const m = colorMeta[key];
-    const card = document.createElement('div');
-    card.className = 'score-card' + (i === 0 ? ' winner' : '');
-    card.style.background = m.bg;
-    card.innerHTML = `
-      <h4>${m.emoji} ${m.label}</h4>
-      <div class="pts">${score}</div>
-      <div class="rank-badge">N°${i+1}</div>
-    `;
-    grid.appendChild(card);
+function renderDragList(qId) {
+  const q = part1Questions.find(q=>q.id===qId);
+  const list = document.getElementById(`drag-${qId}`);
+  if(!list) return;
+  list.innerHTML = '';
+  const order = p1Orders[qId];
+  order.forEach((num, rank) => {
+    const item = q.items.find(i=>i.num===num);
+    const div = document.createElement('div');
+    div.className = 'drag-item';
+    div.draggable = true;
+    div.dataset.num = num;
+    div.dataset.qid = qId;
+    div.innerHTML = `
+      <div class="drag-rank">${rank+1}</div>
+      <div class="drag-handle">⠿</div>
+      <div class="drag-text">${item.text}</div>`;
+    // Drag events
+    div.addEventListener('dragstart', onDragStart);
+    div.addEventListener('dragover', onDragOver);
+    div.addEventListener('drop', onDrop);
+    div.addEventListener('dragend', onDragEnd);
+    // Touch
+    div.addEventListener('touchstart', onTouchStart, {passive:true});
+    div.addEventListener('touchmove', onTouchMove, {passive:false});
+    div.addEventListener('touchend', onTouchEnd);
+    list.appendChild(div);
   });
+}
 
-  // Ranking list
-  const rankList = document.getElementById('ranking-list');
-  rankList.innerHTML = '';
-  sorted.forEach(([key, score], i) => {
+// ============================================================
+// DRAG & DROP
+// ============================================================
+let dragSrc = null;
+function onDragStart(e) {
+  dragSrc = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.drag-item').forEach(i=>i.classList.remove('drag-over'));
+  this.classList.add('drag-over');
+}
+function onDrop(e) {
+  e.stopPropagation();
+  if(dragSrc !== this) {
+    const qId = dragSrc.dataset.qid;
+    const srcNum = parseInt(dragSrc.dataset.num);
+    const tgtNum = parseInt(this.dataset.num);
+    const order = p1Orders[qId];
+    const si = order.indexOf(srcNum);
+    const ti = order.indexOf(tgtNum);
+    order.splice(si,1);
+    order.splice(ti,0,srcNum);
+    renderDragList(qId);
+  }
+  return false;
+}
+function onDragEnd() {
+  document.querySelectorAll('.drag-item').forEach(i=>{
+    i.classList.remove('dragging','drag-over');
+  });
+}
+
+// Touch drag
+let touchItem=null, touchClone=null, touchQid=null, touchOffX=0, touchOffY=0;
+function onTouchStart(e) {
+  touchItem = this;
+  touchQid = this.dataset.qid;
+  const r = this.getBoundingClientRect();
+  touchOffX = e.touches[0].clientX - r.left;
+  touchOffY = e.touches[0].clientY - r.top;
+  touchClone = this.cloneNode(true);
+  touchClone.style.cssText=`position:fixed;width:${r.width}px;opacity:0.85;z-index:9999;pointer-events:none;left:${r.left}px;top:${r.top}px;`;
+  document.body.appendChild(touchClone);
+  this.style.opacity='0.3';
+}
+function onTouchMove(e) {
+  e.preventDefault();
+  if(!touchClone) return;
+  const x = e.touches[0].clientX - touchOffX;
+  const y = e.touches[0].clientY - touchOffY;
+  touchClone.style.left = x+'px';
+  touchClone.style.top = y+'px';
+  document.querySelectorAll('.drag-item').forEach(i=>i.classList.remove('drag-over'));
+  const el = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+  const target = el && el.closest('.drag-item');
+  if(target && target !== touchItem) target.classList.add('drag-over');
+}
+function onTouchEnd(e) {
+  if(touchClone) { document.body.removeChild(touchClone); touchClone=null; }
+  if(touchItem) touchItem.style.opacity='';
+  const el = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+  const target = el && el.closest('.drag-item');
+  if(target && target !== touchItem && target.dataset.qid === touchQid) {
+    const order = p1Orders[touchQid];
+    const si = order.indexOf(parseInt(touchItem.dataset.num));
+    const ti = order.indexOf(parseInt(target.dataset.num));
+    order.splice(si,1);
+    order.splice(ti,0,parseInt(touchItem.dataset.num));
+    renderDragList(touchQid);
+  }
+  document.querySelectorAll('.drag-item').forEach(i=>i.classList.remove('drag-over'));
+  touchItem=null; touchQid=null;
+}
+
+// ============================================================
+// PART 2
+// ============================================================
+function buildPart2() {
+  const cont = document.getElementById('part2-content');
+  cont.innerHTML = '';
+  part2Pairs.forEach((pair,idx) => {
+    if(p2State[idx]===undefined) p2State[idx]=2;
+    const [n1,l1,n2,l2] = pair;
+    const div = document.createElement('div');
+    div.className = 'pair-block';
+    div.innerHTML = `
+      <div class="pair-nums-top"><span>4/0</span><span>3/1</span><span>2/2</span><span>1/3</span><span>0/4</span></div>
+      <div class="pair-row">
+        <div class="pair-label">${n1}. ${l1}</div>
+        <div class="pair-score" id="sa-${idx}">2</div>
+        <div class="slider-wrap">
+          <input type="range" min="0" max="4" step="1" value="2" id="sl-${idx}"
+            style="--pct:50%"
+            oninput="updateSlider(${idx},this.value)">
+        </div>
+        <div class="pair-score dim" id="sb-${idx}">2</div>
+        <div class="pair-label right">${n2}. ${l2}</div>
+      </div>`;
+    cont.appendChild(div);
+  });
+}
+
+function updateSlider(idx, val) {
+  val = parseInt(val);
+  p2State[idx] = val;
+  const a = val, b = 4-val;
+  document.getElementById(`sa-${idx}`).textContent = a;
+  document.getElementById(`sa-${idx}`).className = 'pair-score'+(a===0?' dim':'');
+  document.getElementById(`sb-${idx}`).textContent = b;
+  document.getElementById(`sb-${idx}`).className = 'pair-score'+(b===0?' dim':'');
+  document.getElementById(`sl-${idx}`).style.setProperty('--pct',(val/4*100)+'%');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function updateProgress() {
+  const total = allPages.length + 2; // +confetti +results
+  const step = currentPage + 1;
+  const pct = Math.round((step / total) * 100);
+  document.getElementById('progress-fill').style.width = pct+'%';
+
+  // Label
+  const pid = allPages[currentPage];
+  if(pid && pid.startsWith('page-q-')) {
+    const qi = part1Questions.findIndex(q=>`page-q-${q.id}`===pid);
+    document.getElementById('progress-label').textContent = `Partie 1 – Question ${qi+1}/8`;
+  } else if(pid==='page-transition') {
+    document.getElementById('progress-label').textContent = 'Fin de la Partie 1';
+  } else if(pid==='page-part2') {
+    document.getElementById('progress-label').textContent = 'Partie 2';
+  }
+}
+
+function showPage(idx) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-confetti').style.display='none';
+  document.getElementById('page-results').style.display='none';
+
+  if(idx >= 0 && idx < allPages.length) {
+    currentPage = idx;
+    const pid = allPages[idx];
+    const el = document.getElementById(pid);
+    if(el) el.classList.add('active');
+    document.getElementById('progress-wrap').style.display='block';
+    updateProgress();
+    window.scrollTo(0,0);
+  }
+}
+
+function goToNext() { showPage(currentPage+1); }
+function goToPrev() { showPage(currentPage-1); }
+
+// ============================================================
+// SUBMIT
+// ============================================================
+function submitTest() {
+  // Show confetti
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('progress-wrap').style.display='none';
+  const cf = document.getElementById('page-confetti');
+  cf.style.display='flex';
+  cf.classList.add('active');
+  window.scrollTo(0,0);
+  launchConfetti();
+
+  // Compute scores in background
+  computeScores();
+}
+
+let finalTotals = null;
+function computeScores() {
+  const allScores = {};
+  // Part 1: first in order = 6, second = 4, third = 2, last = 0
+  part1Questions.forEach(q => {
+    p1Orders[q.id].forEach((num, rank) => {
+      allScores[num] = scores[rank];
+    });
+  });
+  // Part 2
+  part2Pairs.forEach((pair,idx) => {
+    const val = p2State[idx]===undefined ? 2 : p2State[idx];
+    allScores[pair[0]] = val;
+    allScores[pair[2]] = 4 - val;
+  });
+  // Sum
+  const totals = {rouge:0,vert:0,bleu:0,jaune:0};
+  Object.entries(allScores).forEach(([num,score]) => {
+    const c = colorMap[parseInt(num)];
+    if(c) totals[c] += score;
+  });
+  finalTotals = totals;
+}
+
+function showResults() {
+  document.getElementById('page-confetti').style.display='none';
+  document.getElementById('page-results').style.display='block';
+  window.scrollTo(0,0);
+  renderResults(finalTotals);
+}
+
+// ============================================================
+// RENDER RESULTS
+// ============================================================
+function renderResults(totals) {
+  const sorted = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+  const [wKey, wScore] = sorted[0];
+  const wMeta = colorMeta[wKey];
+
+  // Winner
+  const wc = document.getElementById('winner-card');
+  wc.style.background = wMeta.bg;
+  wc.innerHTML = `
+    <div style="font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:8px">Ta couleur dominante</div>
+    <h3>${wMeta.label}</h3>
+    <div class="score-big">${wScore}</div>
+    <div class="score-lbl">points</div>`;
+
+  // Classement
+  const cl = document.getElementById('classement');
+  cl.innerHTML = `<h3>Mon Classement Final</h3>`;
+  sorted.forEach(([key,score],i) => {
     const m = colorMeta[key];
     const row = document.createElement('div');
     row.className = 'rank-row';
     row.innerHTML = `
       <div class="rank-n">N°${i+1}</div>
-      <div class="rank-color-dot" style="background:${m.hex}"></div>
-      <div class="rank-color-name" style="color:${m.hex}">${m.label}</div>
-      <div class="rank-pts">${score} pts</div>
-    `;
-    rankList.appendChild(row);
+      <div class="rank-dot" style="background:${m.hex}"></div>
+      <div class="rank-name" style="color:${m.hex}">${m.label}</div>
+      <div class="rank-pts">${score} pts</div>`;
+    cl.appendChild(row);
   });
 
-  // Draw chart
-  drawChart(totals);
+  // Chart — sorted largest to smallest left to right
+  drawChart(sorted);
 }
 
-// =============================================
-// CHART (radar / bar)
-// =============================================
-function drawChart(totals) {
+function drawChart(sorted) {
   const canvas = document.getElementById('chart');
   const ctx = canvas.getContext('2d');
-  const W = canvas.width;
-  const H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
 
-  const colors = [
-    { key: 'rouge', label: 'ROUGE', hex: '#E74C3C' },
-    { key: 'vert',  label: 'VERT',  hex: '#27AE60' },
-    { key: 'bleu',  label: 'BLEU',  hex: '#3498DB' },
-    { key: 'jaune', label: 'JAUNE', hex: '#F1C40F' }
-  ];
-
-  const maxVal = Math.max(...Object.values(totals), 1);
+  const maxVal = Math.max(...sorted.map(s=>s[1]), 1);
   const barW = 80;
-  const gap = (W - colors.length * barW) / (colors.length + 1);
-  const maxH = H - 80;
+  const gap = (W - sorted.length * barW) / (sorted.length + 1);
+  const maxH = H - 70;
 
-  // Background grid
-  ctx.strokeStyle = '#2a2a2a';
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= 5; i++) {
-    const y = 20 + (maxH / 5) * i;
-    ctx.beginPath();
-    ctx.moveTo(30, y);
-    ctx.lineTo(W - 10, y);
-    ctx.stroke();
-    ctx.fillStyle = '#555';
-    ctx.font = '11px Montserrat, sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillText(Math.round(maxVal - (maxVal/5)*i), 26, y + 4);
+  // Grid
+  for(let i=0;i<=4;i++) {
+    const y = 20 + (maxH/4)*i;
+    ctx.strokeStyle='#1e1e1e'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(30,y); ctx.lineTo(W-10,y); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='11px Montserrat,sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText(Math.round(maxVal-(maxVal/4)*i), 26, y+4);
   }
 
-  colors.forEach((c, i) => {
-    const val = totals[c.key];
-    const x = gap + i * (barW + gap);
-    const barH = (val / maxVal) * maxH;
+  sorted.forEach(([key,val],i) => {
+    const m = colorMeta[key];
+    const x = gap + i*(barW+gap);
+    const barH = (val/maxVal)*maxH;
     const y = 20 + maxH - barH;
 
-    // Glow
-    const grd = ctx.createLinearGradient(x, y, x, y + barH);
-    grd.addColorStop(0, c.hex);
-    grd.addColorStop(1, c.hex + '44');
-
-    ctx.shadowColor = c.hex;
-    ctx.shadowBlur = 12;
-    ctx.fillStyle = grd;
+    const grd = ctx.createLinearGradient(x,y,x,y+barH);
+    grd.addColorStop(0,m.hex);
+    grd.addColorStop(1,m.hex+'33');
+    ctx.shadowColor=m.hex; ctx.shadowBlur=14;
+    ctx.fillStyle=grd;
     ctx.beginPath();
-    ctx.roundRect(x, y, barW, barH, [6, 6, 0, 0]);
+    if(ctx.roundRect) ctx.roundRect(x,y,barW,barH,[6,6,0,0]);
+    else ctx.rect(x,y,barW,barH);
     ctx.fill();
-    ctx.shadowBlur = 0;
+    ctx.shadowBlur=0;
 
-    // Value on top
-    ctx.fillStyle = c.hex;
-    ctx.font = 'bold 16px Montserrat, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(val, x + barW/2, y - 8);
+    ctx.fillStyle=m.hex;
+    ctx.font='bold 15px Montserrat,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(val, x+barW/2, y-8);
 
-    // Label below
-    ctx.fillStyle = '#ccc';
-    ctx.font = 'bold 13px Montserrat, sans-serif';
-    ctx.fillText(c.label, x + barW/2, H - 20);
+    ctx.fillStyle='#ccc';
+    ctx.font='bold 12px Montserrat,sans-serif';
+    ctx.fillText(m.label, x+barW/2, H-18);
 
-    // Color dot
     ctx.beginPath();
-    ctx.arc(x + barW/2, H - 8, 5, 0, Math.PI*2);
-    ctx.fillStyle = c.hex;
-    ctx.fill();
+    ctx.arc(x+barW/2,H-6,4,0,Math.PI*2);
+    ctx.fillStyle=m.hex; ctx.fill();
   });
 }
 
+// ============================================================
+// EXPORT
+// ============================================================
+function downloadImage() {
+  const el = document.getElementById('results-content');
+  html2canvas(el, {backgroundColor:'#0A0A0A', scale:2}).then(canvas => {
+    const a = document.createElement('a');
+    a.download = 'mon-profil-be-success.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  });
+}
+
+function shareEmail() {
+  if(!finalTotals) return;
+  const sorted = Object.entries(finalTotals).sort((a,b)=>b[1]-a[1]);
+  const lines = sorted.map(([k,v],i)=>`N°${i+1} : ${colorMeta[k].label} – ${v} pts`).join('%0A');
+  const subject = 'Mon profil BE SUCCESS';
+  const body = `Voici mes résultats au test de personnalité BE SUCCESS :%0A%0A${lines}%0A%0ATest disponible sur : ${window.location.href}`;
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#C9A84C','#FFD700','#E63946','#27AE60','#3A86FF','#F39C12','#fff'];
+
+  for(let i=0;i<160;i++) {
+    particles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height - canvas.height,
+      w: Math.random()*10+5,
+      h: Math.random()*6+4,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      vx: (Math.random()-0.5)*3,
+      vy: Math.random()*4+2,
+      rot: Math.random()*360,
+      rspeed: (Math.random()-0.5)*5
+    });
+  }
+
+  let frame;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x+p.w/2, p.y+p.h/2);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      p.x += p.vx; p.y += p.vy; p.rot += p.rspeed;
+      if(p.y > canvas.height) { p.y=-20; p.x=Math.random()*canvas.width; }
+    });
+    frame = requestAnimationFrame(draw);
+  }
+  draw();
+  setTimeout(()=>{ cancelAnimationFrame(frame); ctx.clearRect(0,0,canvas.width,canvas.height); }, 5000);
+}
+
+// ============================================================
+// RESTART
+// ============================================================
 function restartTest() {
-  p1State = {};
+  p1Orders = {};
   p2State = {};
-  document.getElementById('results').style.display = 'none';
-  document.getElementById('test-form').style.display = 'block';
-  // Reset Part 1
+  finalTotals = null;
   part1Questions.forEach(q => {
-    p1State[q.id] = [];
-    renderP1Question(q.id);
+    p1Orders[q.id] = [...q.items.map(i=>i.num)];
   });
-  // Reset Part 2 sliders
-  part2Pairs.forEach((_, idx) => {
-    p2State[idx] = 2;
-    const slider = document.getElementById(`slider-${idx}`);
-    if (slider) { slider.value = 2; handleSlider(idx, 2); }
-  });
-  window.scrollTo(0, 0);
+  part2Pairs.forEach((_,idx) => { p2State[idx]=2; });
+
+  // Re-render drag lists & sliders
+  part1Questions.forEach(q => renderDragList(q.id));
+  buildPart2();
+
+  document.getElementById('page-results').style.display='none';
+  document.getElementById('page-confetti').style.display='none';
+  document.getElementById('progress-wrap').style.display='block';
+  showPage(0);
 }
 
-// =============================================
+// ============================================================
 // INIT
-// =============================================
-buildPart1();
-buildPart2();
+// ============================================================
+buildAll();
+showPage(0);
 </script>
 </body>
 </html>

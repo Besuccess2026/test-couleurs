@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de Personnalité – BE SUCCESS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --gold-dark: #9A7A2E;
+  --black: #0A0A0A;
+  --black2: #141414;
+  --black3: #1E1E1E;
+  --white: #FFFFFF;
+  --gray: #888;
+  --rouge: #E63946;
+  --vert: #27AE60;
+  --bleu: #3A86FF;
+  --jaune: #F39C12;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--black) 0%, var(--black2) 50%, #1a1500 100%);
+  border-bottom: 2px solid var(--gold);
+  padding: 36px 20px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content:'';
+  position:absolute; top:-50%; left:-50%;
+  width:200%; height:200%;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.07) 0%, transparent 60%);
+  pointer-events:none;
+}
+.dots { position:absolute; width:70px; height:70px;
+  background-image: radial-gradient(circle, var(--gold) 1.5px, transparent 1.5px);
+  background-size: 10px 10px; opacity:0.35; }
+.dots.tr { top:12px; right:18px; }
+.dots.bl { bottom:12px; left:18px; }
+.header h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(3rem,8vw,6rem);
+  letter-spacing:6px; line-height:1;
+  color:var(--white);
+}
+.header h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(1.2rem,3vw,2rem);
+  color:var(--gold);
+  margin-top:4px;
+  letter-spacing: 0.38em;
+}
+.gold-line { width:80px; height:2px;
+  background: linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:14px auto 0; }
+
+/* PROGRESS BAR */
+.progress-wrap {
+  background: var(--black2);
+  border-bottom: 1px solid #222;
+  padding: 14px 20px;
+  text-align:center;
+}
+.progress-label {
+  font-size:0.78rem; letter-spacing:2px;
+  color:var(--gold); text-transform:uppercase;
+  margin-bottom:8px;
+}
+.progress-track {
+  max-width:500px; margin:0 auto;
+  height:4px; background:#2a2a2a; border-radius:2px;
+}
+.progress-fill {
+  height:100%; border-radius:2px;
+  background: linear-gradient(90deg,var(--gold-dark),var(--gold));
+  transition: width 0.4s ease;
+}
+
+/* PAGES */
+.page { display:none; }
+.page.active { display:block; }
+
+/* CONTAINER */
+.container { max-width:760px; margin:0 auto; padding:30px 20px 60px; }
+
+/* INSTRUCTIONS CARD */
+.instr-card {
+  background:var(--black3);
+  border:1px solid var(--gold-dark);
+  border-left:4px solid var(--gold);
+  border-radius:8px;
+  padding:22px 26px;
+  margin-bottom:28px;
+}
+.instr-card h3 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem; letter-spacing:2px;
+  color:var(--gold); margin-bottom:10px;
+}
+.instr-card p { font-size:0.86rem; line-height:1.7; color:#ccc; }
+.instr-card ul { margin:8px 0 0 18px; }
+.instr-card ul li { font-size:0.86rem; color:#ccc; margin-bottom:5px; line-height:1.5; }
+
+/* QUESTION BLOCK */
+.q-block {
+  background:var(--black2);
+  border:1px solid #2a2a2a;
+  border-radius:10px;
+  padding:26px;
+  margin-bottom:20px;
+}
+.q-tag {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:0.85rem; letter-spacing:3px;
+  color:var(--gold); margin-bottom:6px;
+}
+.q-text {
+  font-size:0.9rem; font-weight:600;
+  color:var(--white); margin-bottom:20px;
+  line-height:1.5;
+}
+
+/* DRAG AND DROP */
+.drag-list { display:flex; flex-direction:column; gap:10px; }
+.drag-item {
+  display:flex; align-items:center; gap:14px;
+  background:var(--black3);
+  border:1px solid #333;
+  border-radius:8px;
+  padding:14px 16px;
+  cursor:grab;
+  transition:all 0.2s;
+  user-select:none;
+}
+.drag-item:active { cursor:grabbing; }
+.drag-item.dragging { opacity:0.4; border-color:var(--gold); }
+.drag-item.drag-over { border-color:var(--gold); background:#1a1500; transform:scale(1.01); }
+.drag-rank {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem; color:var(--gold);
+  min-width:28px; text-align:center;
+}
+.drag-handle {
+  color:#555; font-size:1.1rem;
+  flex-shrink:0;
+}
+.drag-text { flex:1; font-size:0.86rem; color:#ddd; line-height:1.4; }
+
+/* PART TRANSITION */
+.part-transition {
+  text-align:center; padding:40px 20px;
+}
+.part-transition h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem; letter-spacing:3px;
+  color:var(--gold); margin-bottom:14px;
+}
+.part-transition p {
+  font-size:0.95rem; color:#ccc;
+  max-width:480px; margin:0 auto 30px;
+  line-height:1.7;
+}
+
+/* PART 2 SLIDERS */
+.pair-block {
+  background:var(--black2);
+  border:1px solid #2a2a2a;
+  border-radius:10px;
+  padding:22px 24px;
+  margin-bottom:14px;
+}
+.pair-nums-top {
+  display:flex; justify-content:space-between;
+  font-size:0.72rem; color:#555; margin-bottom:4px;
+  padding:0 2px;
+}
+.pair-row { display:flex; align-items:center; gap:14px; }
+.pair-label {
+  font-size:0.84rem; font-weight:700; color:#ddd;
+  width:140px; flex-shrink:0; text-align:right;
+}
+.pair-label.right { text-align:left; }
+.pair-score {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.5rem; color:var(--gold);
+  min-width:26px; text-align:center;
+}
+.pair-score.dim { color:#333; }
+.slider-wrap { flex:1; }
+input[type="range"] {
+  -webkit-appearance:none; width:100%; height:6px;
+  background: linear-gradient(90deg, var(--gold) var(--pct,50%), #2a2a2a var(--pct,50%));
+  border-radius:3px; outline:none; cursor:pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:22px; height:22px;
+  border-radius:50%; background:var(--gold);
+  border:3px solid var(--black);
+  box-shadow:0 0 8px rgba(201,168,76,0.5); cursor:pointer;
+}
+
+/* NAVIGATION BUTTONS */
+.nav-wrap {
+  display:flex; justify-content:space-between;
+  align-items:center; margin-top:30px; gap:14px;
+}
+.btn-prev, .btn-next, .btn-submit {
+  font-family:'Bebas Neue',sans-serif;
+  letter-spacing:2px; border-radius:6px;
+  cursor:pointer; transition:all 0.3s;
+  border:none; padding:16px 36px; font-size:1.1rem;
+}
+.btn-prev {
+  background:transparent;
+  border:2px solid #444; color:#888;
+}
+.btn-prev:hover { border-color:var(--gold); color:var(--gold); }
+.btn-next, .btn-submit {
+  background: linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));
+  color:var(--black);
+  box-shadow:0 4px 20px rgba(201,168,76,0.25);
+}
+.btn-next:hover, .btn-submit:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(201,168,76,0.4);
+}
+.btn-spacer { flex:1; }
+
+/* CONFETTI PAGE */
+#page-confetti {
+  min-height:100vh;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px 20px;
+  position:relative;
+  overflow:hidden;
+}
+#page-confetti.active { display:flex; }
+.confetti-canvas {
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none; z-index:0;
+}
+.confetti-content { position:relative; z-index:1; }
+.confetti-content h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2rem,6vw,4rem);
+  letter-spacing:4px; color:var(--gold);
+  margin-bottom:16px;
+}
+.confetti-content p {
+  font-size:1rem; color:#ccc;
+  max-width:450px; margin:0 auto;
+  line-height:1.7;
+}
+.confetti-emoji { font-size:3rem; margin-bottom:16px; }
+
+/* RESULTS */
+#page-results { display:none; }
+#page-results.active { display:block; }
+
+.result-hero {
+  text-align:center; padding:40px 20px 20px;
+}
+.result-hero h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.6rem,4vw,2.8rem);
+  letter-spacing:4px;
+}
+
+.color-winner {
+  max-width:480px; margin:20px auto;
+  border-radius:14px; padding:28px;
+  text-align:center; position:relative; overflow:hidden;
+}
+.color-winner::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.12),transparent);
+}
+.color-winner h3 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.8rem; letter-spacing:5px; color:white;
+}
+.color-winner .score-big {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem; color:white; line-height:1;
+}
+.color-winner .score-lbl {
+  font-size:0.75rem; letter-spacing:2px;
+  text-transform:uppercase; color:rgba(255,255,255,0.65);
+}
+
+/* CLASSEMENT */
+.classement-block {
+  max-width:360px; margin:12px auto;
+  background:var(--black2);
+  border:1px solid var(--gold-dark);
+  border-radius:10px; padding:14px 18px;
+}
+.classement-block h3 {
+  font-family:'Montserrat',sans-serif;
+  font-size:1rem; font-weight:700;
+  color:var(--gold); margin-bottom:10px;
+  text-align:center; letter-spacing:1px;
+}
+.rank-row {
+  display:flex; align-items:center; gap:8px;
+  padding:3px 0;
+  border-bottom:1px solid #1e1e1e;
+}
+.rank-row:last-child { border-bottom:none; }
+.rank-n {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem; color:var(--gold); min-width:34px;
+}
+.rank-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+.rank-name {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem; letter-spacing:2px; flex:1;
+}
+.rank-pts {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem; color:var(--gold);
+}
+
+/* GRAPH */
+.graph-block {
+  max-width:600px; margin:20px auto;
+  background:var(--black2);
+  border:1px solid var(--gold-dark);
+  border-radius:12px; padding:24px;
+  text-align:center;
+}
+.graph-block h3 {
+  font-family:'Montserrat',sans-serif;
+  font-size:1rem; font-weight:700;
+  color:var(--gold); margin-bottom:16px;
+  letter-spacing:1px;
+}
+canvas#chart { max-width:100%; }
+
+/* EXPORT BUTTONS */
+.export-wrap {
+  text-align:center; margin:24px auto;
+  max-width:600px;
+}
+.export-wrap p {
+  font-size:0.8rem; color:var(--gray);
+  letter-spacing:1px; text-transform:uppercase;
+  margin-bottom:12px;
+}
+.export-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-export {
+  background:var(--black3);
+  border:1px solid var(--gold-dark);
+  color:var(--gold);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1rem; letter-spacing:2px;
+  padding:12px 24px; border-radius:6px;
+  cursor:pointer; transition:all 0.3s;
+}
+.btn-export:hover { background:var(--gold); color:var(--black); border-color:var(--gold); }
+
+.btn-restart {
+  display:block; margin:10px auto 0;
+  background:transparent;
+  border:1px solid #333; color:#555;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:0.9rem; letter-spacing:2px;
+  padding:10px 24px; border-radius:6px;
+  cursor:pointer; transition:all 0.3s;
+}
+.btn-restart:hover { border-color:#666; color:#888; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.fade-up { animation:fadeUp 0.5s ease forwards; }
+
+@media(max-width:600px) {
+  .pair-label { width:90px; font-size:0.75rem; }
+  .pair-score { font-size:1.2rem; min-width:20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="dots tr"></div>
+  <div class="dots bl"></div>
+  <svg viewBox="0 0 400 110" xmlns="http://www.w3.org/2000/svg" style="width:min(90vw,600px);display:block;margin:0 auto;overflow:visible;">
+    <text x="200" y="72" text-anchor="middle" dominant-baseline="auto"
+      font-family="'Bebas Neue', sans-serif" font-size="80" letter-spacing="6"
+      fill="white">BE SUCCESS</text>
+    <text x="200" y="105" text-anchor="middle" dominant-baseline="auto"
+      font-family="'Bebas Neue', sans-serif" font-size="26" textLength="370" lengthAdjust="spacing"
+      fill="#C9A84C">TEST DE PERSONNALITÉ</text>
+  </svg>
+  <div class="gold-line"></div>
+</div>
+
+<div class="progress-wrap" id="progress-wrap" style="display:none;">
+  <div class="progress-label" id="progress-label">Partie 1 – Question 1/8</div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+</div>
+
+<!-- ===== PAGE BIENVENUE ===== -->
+<div id="page-welcome" class="page active">
+  <div class="container" style="max-width:680px;">
+    <div style="background:var(--black2);border:1px solid var(--gold-dark);border-left:4px solid var(--gold);border-radius:10px;padding:36px 32px;margin-top:20px;">
+      <div style="text-align:center;margin-bottom:28px;">
+        <div style="font-size:2rem;margin-bottom:10px;">👋</div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:var(--gold);">BIENVENUE À TOI !</h2>
+      </div>
+      <p style="font-size:0.92rem;line-height:1.9;color:#ddd;text-align:justify;">
+        Bienvenue à toi sur le <strong style="color:var(--gold);">test de personnalité BE SUCCESS</strong>.
+      </p>
+      <p style="font-size:0.92rem;line-height:1.9;color:#ddd;margin-top:16px;text-align:justify;">
+        Réponds de la manière la plus honnête et transparente possible. Pas comme tu aimerais être dans le futur, et pas comme tu étais il y a quelques mois ou quelques années, mais vraiment comme tu es aujourd'hui.
+      </p>
+      <p style="font-size:0.92rem;line-height:1.9;color:#ddd;margin-top:16px;text-align:justify;">
+        Réponds de manière instinctive, le plus rapidement possible, car plus tu réfléchis, plus tu risques de t'éloigner de la réalité. Et plus tu réponds honnêtement, plus les résultats seront proches de la réalité et pourront au mieux <strong style="color:var(--gold);">t'aider</strong>.
+      </p>
+      <p style="font-size:0.92rem;line-height:1.9;color:#ddd;margin-top:16px;text-align:justify;">
+        Sache que c'est un test que tu peux refaire aussi souvent que tu en ressens le besoin. On te recommande au moins <strong>une fois par an</strong>. 🌟
+      </p>
+      <div style="text-align:center;margin-top:32px;">
+        <button class="btn-next" onclick="startTest()" style="font-size:1.3rem;padding:18px 52px;letter-spacing:3px;">Commencer mon test →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGES PARTIE 1 (A-H) ===== -->
+<div id="pages-container"></div>
+
+<!-- ===== TRANSITION PARTIE 1 → 2 ===== -->
+<div class="page" id="page-transition">
+  <div class="container">
+    <div class="part-transition fade-up">
+      <div style="font-size:3rem;margin-bottom:16px">🎉</div>
+      <h2>Bravo !</h2>
+      <p>Tu viens de compléter la première partie.</p>
+      <p style="margin-top:16px;">Passe maintenant à la deuxième partie !</p>
+      <div class="nav-wrap" style="justify-content:center;">
+        <button class="btn-prev" onclick="goToPrev()">← Précédent</button>
+        <button class="btn-next" onclick="goToNext()">Partie 2 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PARTIE 2 ===== -->
+<div class="page" id="page-part2">
+  <div class="container">
+    <div class="instr-card">
+      <h3>📋 Comment ça marche</h3>
+      <p>Pour chaque paire d'adjectifs, utilise le curseur pour répartir <strong>4 points</strong> entre les deux :</p>
+      <ul>
+        <li><strong>4 / 0</strong> → Je suis beaucoup l'un, pas du tout l'autre</li>
+        <li><strong>3 / 1</strong> → Je suis assez l'un, un peu l'autre</li>
+        <li><strong>2 / 2</strong> → Je suis autant l'un que l'autre</li>
+        <li><strong>1 / 3</strong> → Je suis un peu l'un, assez l'autre</li>
+        <li><strong>0 / 4</strong> → Je suis pas du tout l'un, beaucoup l'autre</li>
+      </ul>
+    </div>
+    <div id="part2-content"></div>
+    <div class="nav-wrap">
+      <button class="btn-prev" onclick="goToPrev()">← Précédent</button>
+      <div class="btn-spacer"></div>
+      <button class="btn-submit" onclick="submitTest()">Calculer mon profil ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONFETTI ===== -->
+<div id="page-confetti">
+  <canvas class="confetti-canvas" id="confetti-canvas"></canvas>
+  <div class="confetti-content fade-up" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;">
+    <div class="confetti-emoji">✨🌟✨</div>
+    <h2>Bravo à toi !</h2>
+    <p>Tu as terminé le test de personnalité BE SUCCESS.</p>
+    <p style="margin-top:12px;">Découvre maintenant ta couleur dominante et ton profil complet !</p>
+    <div style="margin-top:28px;">
+      <button class="btn-next" onclick="showResults()" style="font-size:1.2rem;padding:18px 44px;">Voir mes résultats →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESULTS ===== -->
+<div id="page-results">
+  <div id="results-content" class="container">
+    <div class="result-hero fade-up">
+      <h2>TON PROFIL DE PERSONNALITÉ</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div id="winner-card" class="color-winner fade-up"></div>
+    <div id="classement" class="classement-block fade-up"></div>
+    <div class="graph-block fade-up">
+      <h3 style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;">📊 Ton graphique</h3>
+      <canvas id="chart" width="520" height="320"></canvas>
+    </div>
+    <div class="export-wrap fade-up">
+      <p id="export-date"></p>
+      <div class="export-btns">
+        <button class="btn-export" onclick="downloadImage()">📷 Télécharger en image</button>
+        <button class="btn-export" onclick="downloadPDF()">📄 Télécharger en PDF</button>
+        <button class="btn-export" onclick="openShareModal()">📋 Copier mes résultats</button>
+      </div>
+      <button class="btn-restart" onclick="restartTest()">↩ Refaire le test</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div id="share-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1E1E1E;border:1px solid #C9A84C;border-radius:12px;padding:30px;max-width:480px;width:90%;position:relative;">
+    <button onclick="closeShareModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#888;font-size:1.4rem;cursor:pointer;">✕</button>
+    <h3 style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;color:#C9A84C;margin-bottom:14px;font-size:1.3rem;">MES RÉSULTATS BE SUCCESS</h3>
+    <textarea id="share-text" readonly style="width:100%;height:180px;background:#0A0A0A;border:1px solid #333;border-radius:6px;color:#ddd;font-family:'Montserrat',sans-serif;font-size:0.85rem;padding:14px;resize:none;line-height:1.6;"></textarea>
+    <button onclick="copyResults()" id="copy-btn" style="margin-top:12px;width:100%;background:linear-gradient(135deg,#9A7A2E,#C9A84C,#E8C96A);color:#0A0A0A;border:none;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;padding:14px;border-radius:6px;cursor:pointer;">📋 COPIER</button>
+  </div>
+
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const part1Questions = [
+  { id:'A', items:[
+    {num:1, text:"Être emballé et établir de bonnes relations de travail avec chacun."},
+    {num:2, text:"Discuter de toutes les possibilités sans imposer mon opinion."},
+    {num:3, text:"Prendre les rênes et se concentrer sur obtenir des résultats."},
+    {num:4, text:"Être logique sur le déroulement et bien décortiquer la tâche avant de démarrer."}
+  ], ctx:"Quand je travaille sur un projet professionnel avec d'autres leaders que je connais peu, j'ai tendance à :"},
+  { id:'B', items:[
+    {num:5, text:"Amical, chaleureux et créatif."},
+    {num:6, text:"Extraverti, fun et énergique."},
+    {num:7, text:"Confiant et dans le contrôle."},
+    {num:8, text:"Silencieux, réservé et réfléchi."}
+  ], ctx:"Quand je suis dans un environnement social, mon comportement est :"},
+  { id:'C', items:[
+    {num:9, text:"Indécise et timide."},
+    {num:10, text:"Tête en l'air, en retard et endormi."},
+    {num:11, text:"Ennuyeux et trop sérieux."},
+    {num:12, text:"Indifférent, matérialiste et sans émotions."}
+  ], ctx:"Je déteste quand la personne avec qui je suis en couple est :"},
+  { id:'D', items:[
+    {num:13, text:"Vouloir parler et exprimer mes émotions."},
+    {num:14, text:"Ignorer et me concentrer sur quelque chose de plus important."},
+    {num:15, text:"Sortir m'amuser pour m'aider à oublier le problème, je m'en occuperai plus tard."},
+    {num:16, text:"Faire quelque chose d'autre pour éviter de me retrouver dans une situation où je dois montrer et exposer mes émotions."}
+  ], ctx:"Quand quelque chose me dérange émotionnellement, j'ai tendance à :"},
+  { id:'E', items:[
+    {num:17, text:"Créatif, un bon soutien et utile."},
+    {num:18, text:"Détaillé, logique et dans le contrôle."},
+    {num:19, text:"Énergique, optimiste et fun."},
+    {num:20, text:"Fonceur, exigeant et confiant."}
+  ], ctx:"Quand je suis dans une discussion professionnelle, je veux que les gens me voient comme :"},
+  { id:'F', items:[
+    {num:21, text:"Les tâches doivent être faites maintenant."},
+    {num:22, text:"Je vais faire de mon mieux pour respecter les délais."},
+    {num:23, text:"Les délais me mettent la pression."},
+    {num:24, text:"Ça doit être fait avec précision et dans les temps."}
+  ], ctx:"Quand il s'agit de respecter des délais dans ma vie professionnelle, je me dis que :"},
+  { id:'G', items:[
+    {num:25, text:"Fonceur, orienté objectif et confiant."},
+    {num:26, text:"Très intelligent, efficace et détaillé."},
+    {num:27, text:"Très sociable, marrant et spontané."},
+    {num:28, text:"Soigneux, créatif et impliqué."}
+  ], ctx:"J'adore donner l'impression que je suis :"},
+  { id:'H', items:[
+    {num:29, text:"Faire quelque chose autour de la maison ou me rattraper sur certaines lectures."},
+    {num:30, text:"Sortir et faire quelque chose d'amusant."},
+    {num:31, text:"Aller aider les autres bénévolement ou faire quelque chose de créatif."},
+    {num:32, text:"Faire quelque chose d'extravagant en récompense de tous mes efforts."}
+  ], ctx:"Quand j'ai du temps libre, j'aime :"}
+];
+
+const part2Pairs = [
+  [33,"Sociable",34,"Empathique"],
+  [35,"Analyse longtemps avant d'agir",36,"Fonceur"],
+  [37,"Tête en l'air",38,"Déterminé"],
+  [39,"Réaliste",40,"Rêveur"],
+  [41,"Challengeur",42,"Préfère travailler en équipe"],
+  [43,"Rationnel",44,"Émotionnel"],
+  [45,"Introverti",46,"Extraverti"],
+  [47,"Ponctuel",48,"Facilement en retard"],
+  [49,"Follower (je suis)",50,"Leader (on me suit)"],
+  [51,"Décisif",52,"Sensible"],
+  [53,"Drôle",54,"Sérieux"],
+  [55,"Fuis la confrontation",56,"Aime la confrontation"]
+];
+
+const colorMap = {
+  2:'vert',5:'vert',12:'vert',13:'vert',17:'vert',23:'vert',
+  28:'vert',31:'vert',34:'vert',42:'vert',44:'vert',49:'vert',52:'vert',55:'vert',
+  11:'jaune',15:'jaune',19:'jaune',22:'jaune',27:'jaune',30:'jaune',
+  33:'jaune',37:'jaune',40:'jaune',46:'jaune',48:'jaune',53:'jaune',
+  10:'bleu',16:'bleu',18:'bleu',24:'bleu',26:'bleu',29:'bleu',
+  35:'bleu',39:'bleu',43:'bleu',45:'bleu',47:'bleu',54:'bleu',
+  14:'rouge',20:'rouge',21:'rouge',25:'rouge',32:'rouge',36:'rouge',
+  38:'rouge',41:'rouge',50:'rouge',51:'rouge',56:'rouge'
+};
+
+const colorMeta = {
+  rouge:{label:'ROUGE',hex:'#E63946',bg:'linear-gradient(135deg,#7a0000,#C0392B,#E74C3C)'},
+  vert: {label:'VERT', hex:'#27AE60',bg:'linear-gradient(135deg,#0d4a22,#1e8449,#27AE60)'},
+  bleu: {label:'BLEU', hex:'#3A86FF',bg:'linear-gradient(135deg,#0a1f6e,#1a56db,#3A86FF)'},
+  jaune:{label:'JAUNE',hex:'#F39C12',bg:'linear-gradient(135deg,#6b4000,#d68910,#F39C12)'}
+};
+
+const scores = [6,4,2,0];
+
+// State
+let p1Orders = {}; // {A: [num,num,num,num]} — order = rank
+let p2State = {};  // {idx: sliderVal}
+let currentPage = 0;
+let allPages = []; // list of page element ids in order
+
+// ============================================================
+// BUILD
+// ============================================================
+function buildAll() {
+  const container = document.getElementById('pages-container');
+
+  const instrHtmlBase = `
+    <div class="instr-card">
+      <h3>📋 Comment ça marche</h3>
+      <p>Classe les 4 affirmations selon ce qui te décrit le mieux en ce moment :</p>
+      <ul>
+        <li>Mets en 1er celle qui te ressemble <strong>le plus</strong></li>
+        <li>En 2ème celle qui te ressemble <strong>assez</strong></li>
+        <li>En 3ème celle qui te ressemble <strong>un peu</strong></li>
+        <li>En 4ème celle qui te ressemble <strong>le moins</strong></li>
+      </ul>
+      <p style="margin-top:10px;color:#aaa;font-size:0.82rem;">👆 Glisse et dépose les phrases pour les réordonner.</p>
+    </div>`;
+
+  // Part 1: one page per question
+  part1Questions.forEach((q, qi) => {
+    p1Orders[q.id] = [...q.items.map(i=>i.num)];
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.id = `page-q-${q.id}`;
+
+    const showInstr = qi === 0 || qi === 1;
+    const instrHtml = showInstr ? instrHtmlBase : '';
+
+    const warningHtml = q.id === 'C' ? `
+      <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:0.82rem;color:#C9A84C;">
+        ⚠️ Attention : mets <strong>en 1er</strong> ce que tu détestes le plus, et <strong>en 4ème</strong> ce que tu tolères le plus.
+      </div>` : '';
+
+    page.innerHTML = `
+      <div class="container">
+        ${instrHtml}
+        <div class="q-block">
+          <div class="q-text">${q.ctx}</div>
+          ${warningHtml}
+          <div class="drag-list" id="drag-${q.id}"></div>
+        </div>
+        <div class="nav-wrap">
+          ${qi > 0 ? `<button class="btn-prev" onclick="goToPrev()">← Précédent</button>` : `<div></div>`}
+          <div class="btn-spacer"></div>
+          <button class="btn-next" onclick="tryNext('${q.id}')">Suivant →</button>
+        </div>
+      </div>`;
+
+    container.appendChild(page);
+    allPages.push(`page-q-${q.id}`);
+  });
+
+  part1Questions.forEach(q => renderDragList(q.id));
+  allPages.push('page-transition');
+  allPages.push('page-part2');
+  buildPart2();
+}
+
+function renderDragList(qId) {
+  const q = part1Questions.find(q=>q.id===qId);
+  const list = document.getElementById(`drag-${qId}`);
+  if(!list) return;
+  list.innerHTML = '';
+  const order = p1Orders[qId];
+  order.forEach((num, rank) => {
+    const item = q.items.find(i=>i.num===num);
+    const div = document.createElement('div');
+    div.className = 'drag-item';
+    div.draggable = true;
+    div.dataset.num = num;
+    div.dataset.qid = qId;
+    div.innerHTML = `
+      <div class="drag-rank">${rank+1}</div>
+      <div class="drag-handle">⠿</div>
+      <div class="drag-text">${item.text}</div>`;
+    // Drag events
+    div.addEventListener('dragstart', onDragStart);
+    div.addEventListener('dragover', onDragOver);
+    div.addEventListener('drop', onDrop);
+    div.addEventListener('dragend', onDragEnd);
+    // Touch
+    div.addEventListener('touchstart', onTouchStart, {passive:true});
+    div.addEventListener('touchmove', onTouchMove, {passive:false});
+    div.addEventListener('touchend', onTouchEnd);
+    list.appendChild(div);
+  });
+}
+
+// ============================================================
+// DRAG & DROP
+// ============================================================
+let dragSrc = null;
+function onDragStart(e) {
+  dragSrc = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.drag-item').forEach(i=>i.classList.remove('drag-over'));
+  this.classList.add('drag-over');
+}
+function onDrop(e) {
+  e.stopPropagation();
+  if(dragSrc !== this) {
+    const qId = dragSrc.dataset.qid;
+    const srcNum = parseInt(dragSrc.dataset.num);
+    const tgtNum = parseInt(this.dataset.num);
+    const order = p1Orders[qId];
+    const si = order.indexOf(srcNum);
+    const ti = order.indexOf(tgtNum);
+    order.splice(si,1);
+    order.splice(ti,0,srcNum);
+    p1Moved[qId] = true;
+    const warn = document.getElementById(`warn-${qId}`);
+    if(warn) warn.style.display='none';
+    renderDragList(qId);
+  }
+  return false;
+}
+function onDragEnd() {
+  document.querySelectorAll('.drag-item').forEach(i=>{
+    i.classList.remove('dragging','drag-over');
+  });
+}
+
+// Touch drag
+let touchItem=null, touchClone=null, touchQid=null, touchOffX=0, touchOffY=0;
+function onTouchStart(e) {
+  touchItem = this;
+  touchQid = this.dataset.qid;
+  const r = this.getBoundingClientRect();
+  touchOffX = e.touches[0].clientX - r.left;
+  touchOffY = e.touches[0].clientY - r.top;
+  touchClone = this.cloneNode(true);
+  touchClone.style.cssText=`position:fixed;width:${r.width}px;opacity:0.85;z-index:9999;pointer-events:none;left:${r.left}px;top:${r.top}px;`;
+  document.body.appendChild(touchClone);
+  this.style.opacity='0.3';
+}
+function onTouchMove(e) {
+  e.preventDefault();
+  if(!touchClone) return;
+  const x = e.touches[0].clientX - touchOffX;
+  const y = e.touches[0].clientY - touchOffY;
+  touchClone.style.left = x+'px';
+  touchClone.style.top = y+'px';
+  document.querySelectorAll('.drag-item').forEach(i=>i.classList.remove('drag-over'));
+  const el = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+  const target = el && el.closest('.drag-item');
+  if(target && target !== touchItem) target.classList.add('drag-over');
+}
+function onTouchEnd(e) {
+  if(touchClone) { document.body.removeChild(touchClone); touchClone=null; }
+  if(touchItem) touchItem.style.opacity='';
+  const el = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+  const target = el && el.closest('.drag-item');
+  if(target && target !== touchItem && target.dataset.qid === touchQid) {
+    const order = p1Orders[touchQid];
+    const si = order.indexOf(parseInt(touchItem.dataset.num));
+    const ti = order.indexOf(parseInt(target.dataset.num));
+    order.splice(si,1);
+    order.splice(ti,0,parseInt(touchItem.dataset.num));
+    p1Moved[touchQid] = true;
+    const warn = document.getElementById(`warn-${touchQid}`);
+    if(warn) warn.style.display='none';
+    renderDragList(touchQid);
+  }
+  document.querySelectorAll('.drag-item').forEach(i=>i.classList.remove('drag-over'));
+  touchItem=null; touchQid=null;
+}
+
+// ============================================================
+// PART 2
+// ============================================================
+function buildPart2() {
+  const cont = document.getElementById('part2-content');
+  cont.innerHTML = '';
+  part2Pairs.forEach((pair,idx) => {
+    if(p2State[idx]===undefined) p2State[idx]=2;
+    const [n1,l1,n2,l2] = pair;
+    const div = document.createElement('div');
+    div.className = 'pair-block';
+    div.innerHTML = `
+      <div class="pair-nums-top"><span>4/0</span><span>3/1</span><span>2/2</span><span>1/3</span><span>0/4</span></div>
+      <div class="pair-row">
+        <div class="pair-label">${l1}</div>
+        <div class="pair-score" id="sa-${idx}">2</div>
+        <div class="slider-wrap">
+          <input type="range" min="0" max="4" step="1" value="2" id="sl-${idx}"
+            style="--pct:50%"
+            oninput="updateSlider(${idx},this.value)">
+        </div>
+        <div class="pair-score dim" id="sb-${idx}">2</div>
+        <div class="pair-label right">${l2}</div>
+      </div>`;
+    cont.appendChild(div);
+  });
+}
+
+function updateSlider(idx, val) {
+  val = parseInt(val);
+  p2State[idx] = val;
+  p2Moved[idx] = true;
+  const warn = document.getElementById('warn-part2');
+  if(warn) warn.style.display = 'none';
+  const a = val, b = 4-val;
+  document.getElementById(`sa-${idx}`).textContent = a;
+  document.getElementById(`sa-${idx}`).className = 'pair-score'+(a===0?' dim':'');
+  document.getElementById(`sb-${idx}`).textContent = b;
+  document.getElementById(`sb-${idx}`).className = 'pair-score'+(b===0?' dim':'');
+  document.getElementById(`sl-${idx}`).style.setProperty('--pct',(val/4*100)+'%');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function updateProgress() {
+  const total = allPages.length + 2; // +confetti +results
+  const step = currentPage + 1;
+  const pct = Math.round((step / total) * 100);
+  document.getElementById('progress-fill').style.width = pct+'%';
+
+  // Label
+  const pid = allPages[currentPage];
+  if(pid && pid.startsWith('page-q-')) {
+    const qi = part1Questions.findIndex(q=>`page-q-${q.id}`===pid);
+    document.getElementById('progress-label').textContent = `Partie 1 – Question ${qi+1}/8`;
+  } else if(pid==='page-transition') {
+    document.getElementById('progress-label').textContent = 'Fin de la Partie 1';
+  } else if(pid==='page-part2') {
+    document.getElementById('progress-label').textContent = 'Partie 2';
+  }
+}
+
+function showPage(idx) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-confetti').style.display='none';
+  document.getElementById('page-results').style.display='none';
+
+  if(idx >= 0 && idx < allPages.length) {
+    currentPage = idx;
+    const pid = allPages[idx];
+    const el = document.getElementById(pid);
+    if(el) el.classList.add('active');
+    document.getElementById('progress-wrap').style.display='block';
+    updateProgress();
+    window.scrollTo(0,0);
+  }
+}
+
+function startTest() {
+  document.getElementById('page-welcome').classList.remove('active');
+  document.getElementById('progress-wrap').style.display = 'block';
+  showPage(0);
+}
+
+// Track which questions have been interacted with
+const p1Moved = {};
+
+function tryNext(qId) {
+  if(!p1Moved[qId]) {
+    // Flash warning
+    const list = document.getElementById(`drag-${qId}`);
+    if(list) {
+      list.style.outline = '2px solid #E63946';
+      list.style.borderRadius = '8px';
+      // Show message
+      let warn = document.getElementById(`warn-${qId}`);
+      if(!warn) {
+        warn = document.createElement('div');
+        warn.id = `warn-${qId}`;
+        warn.style.cssText = 'color:#E63946;font-size:0.82rem;margin-top:10px;text-align:center;';
+        warn.textContent = '⚠️ Glisse au moins une réponse pour valider ta réponse.';
+        list.parentNode.insertBefore(warn, list.nextSibling);
+      }
+      warn.style.display = 'block';
+      setTimeout(()=>{ list.style.outline=''; }, 1500);
+    }
+    return;
+  }
+  goToNext();
+}
+
+const p2Moved = {};
+
+function goToNext() { showPage(currentPage+1); }
+function goToPrev() { showPage(currentPage-1); }
+
+// ============================================================
+// SUBMIT
+// ============================================================
+function submitTest() {
+  // Check at least one slider has been moved
+  const anyMoved = Object.keys(p2Moved).length > 0;
+  if(!anyMoved) {
+    let warn = document.getElementById('warn-part2');
+    if(!warn) {
+      warn = document.createElement('div');
+      warn.id = 'warn-part2';
+      warn.style.cssText = 'color:#E63946;font-size:0.85rem;text-align:center;margin-bottom:14px;';
+      warn.textContent = '⚠️ Déplace au moins un curseur avant de soumettre.';
+      const btn = document.querySelector('#page-part2 .btn-submit');
+      btn.parentNode.insertBefore(warn, btn);
+    }
+    warn.style.display = 'block';
+    return;
+  }
+
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('progress-wrap').style.display='none';
+  const cf = document.getElementById('page-confetti');
+  cf.style.display='flex';
+  cf.classList.add('active');
+  window.scrollTo(0,0);
+  launchConfetti();
+  computeScores();
+}
+
+let finalTotals = null;
+function computeScores() {
+  const allScores = {};
+  // Part 1: first in order = 6, second = 4, third = 2, last = 0
+  part1Questions.forEach(q => {
+    p1Orders[q.id].forEach((num, rank) => {
+      allScores[num] = scores[rank];
+    });
+  });
+  // Part 2
+  part2Pairs.forEach((pair,idx) => {
+    const val = p2State[idx]===undefined ? 2 : p2State[idx];
+    allScores[pair[0]] = val;
+    allScores[pair[2]] = 4 - val;
+  });
+  // Sum
+  const totals = {rouge:0,vert:0,bleu:0,jaune:0};
+  Object.entries(allScores).forEach(([num,score]) => {
+    const c = colorMap[parseInt(num)];
+    if(c) totals[c] += score;
+  });
+  finalTotals = totals;
+}
+
+function showResults() {
+  document.getElementById('page-confetti').style.display='none';
+  document.getElementById('page-results').style.display='block';
+  window.scrollTo(0,0);
+  renderResults(finalTotals);
+}
+
+// ============================================================
+// RENDER RESULTS
+// ============================================================
+function renderResults(totals) {
+  const sorted = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+  const [wKey, wScore] = sorted[0];
+  const wMeta = colorMeta[wKey];
+
+  // Date du jour
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+  const dateEl = document.getElementById('export-date');
+  if(dateEl) dateEl.textContent = dateStr;
+
+  // Winner
+  const wc = document.getElementById('winner-card');
+  wc.style.background = wMeta.bg;
+  wc.innerHTML = `
+    <div style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.85);margin-bottom:10px;">🎨 Ta couleur dominante</div>
+    <h3>${wMeta.label}</h3>
+    <div class="score-big">${wScore}</div>
+    <div class="score-lbl">points</div>`;
+
+  // Classement
+  const cl = document.getElementById('classement');
+  cl.innerHTML = `<h3>🏆 Ton classement final</h3>`;
+  sorted.forEach(([key,score],i) => {
+    const m = colorMeta[key];
+    const row = document.createElement('div');
+    row.className = 'rank-row';
+    row.innerHTML = `
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);min-width:44px;">N°${i+1}</span><span style="width:12px;height:12px;border-radius:50%;background:${m.hex};display:inline-block;flex-shrink:0;"></span><span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:${m.hex};flex:1;padding-left:6px;">${m.label}</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:${m.hex};">${score} pts</span>`;
+    cl.appendChild(row);
+  });
+
+  drawChart(sorted);
+}
+
+function drawChart(sorted) {
+  const canvas = document.getElementById('chart');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  const maxVal = Math.max(...sorted.map(s=>s[1]), 1);
+  const barW = 80;
+  const gap = (W - sorted.length * barW) / (sorted.length + 1);
+  const maxH = H - 70;
+
+  // Grid
+  for(let i=0;i<=4;i++) {
+    const y = 20 + (maxH/4)*i;
+    ctx.strokeStyle='#1e1e1e'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(30,y); ctx.lineTo(W-10,y); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='11px Montserrat,sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText(Math.round(maxVal-(maxVal/4)*i), 26, y+4);
+  }
+
+  sorted.forEach(([key,val],i) => {
+    const m = colorMeta[key];
+    const x = gap + i*(barW+gap);
+    const barH = (val/maxVal)*maxH;
+    const y = 20 + maxH - barH;
+
+    const grd = ctx.createLinearGradient(x,y,x,y+barH);
+    grd.addColorStop(0,m.hex);
+    grd.addColorStop(1,m.hex+'33');
+    ctx.shadowColor=m.hex; ctx.shadowBlur=14;
+    ctx.fillStyle=grd;
+    ctx.beginPath();
+    if(ctx.roundRect) ctx.roundRect(x,y,barW,barH,[6,6,0,0]);
+    else ctx.rect(x,y,barW,barH);
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    ctx.fillStyle=m.hex;
+    ctx.font='bold 15px Montserrat,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(val, x+barW/2, y-8);
+
+    ctx.fillStyle='#ccc';
+    ctx.font='bold 12px Montserrat,sans-serif';
+    ctx.fillText(m.label, x+barW/2, H-18);
+
+    ctx.beginPath();
+    ctx.arc(x+barW/2,H-6,4,0,Math.PI*2);
+    ctx.fillStyle=m.hex; ctx.fill();
+  });
+}
+
+// ============================================================
+// EXPORT
+// ============================================================
+
+// Hidden card for clean image export
+function buildExportCard(totals, chartDataUrl) {
+  const sorted = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+  const [wKey] = sorted[0];
+  const wMeta = colorMeta[wKey];
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+
+  const card = document.createElement('div');
+  card.id = 'export-card';
+  card.style.cssText = `
+    position:fixed; left:-9999px; top:0;
+    width:600px; padding:40px;
+    background:#111;
+    font-family:'Montserrat',sans-serif;
+    border:3px solid #C9A84C;
+  `;
+
+  const rankRows = sorted.map(([k,v],i) => {
+    const m = colorMeta[k];
+    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #222;">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#C9A84C;min-width:44px;">N°${i+1}</span>
+      <span style="width:16px;height:16px;border-radius:50%;background:${m.hex};display:inline-block;flex-shrink:0;box-shadow:0 0 8px ${m.hex};"></span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:3px;color:${m.hex};flex:1;">${m.label}</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:${m.hex};font-weight:700;">${v} pts</span>
+    </div>`;
+  }).join('');
+
+  const chartHtml = chartDataUrl
+    ? `<div style="background:#1a1a1a;border:1px solid #C9A84C44;border-radius:12px;padding:16px;margin-bottom:18px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;color:#C9A84C;margin-bottom:10px;text-align:center;">📊 Ton graphique</div>
+        <img src="${chartDataUrl}" style="width:100%;display:block;border-radius:6px;">
+       </div>` : '';
+
+  card.innerHTML = `
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:6px;color:#fff;line-height:1;">BE SUCCESS</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:5px;color:#C9A84C;margin-top:4px;">TEST DE PERSONNALITÉ</div>
+      <div style="width:80px;height:2px;background:linear-gradient(90deg,transparent,#C9A84C,transparent);margin:12px auto;"></div>
+      <div style="font-size:0.85rem;color:#C9A84C;letter-spacing:2px;margin-top:6px;">${dateStr}</div>
+    </div>
+    <div style="background:${wMeta.bg};border-radius:14px;padding:24px;text-align:center;margin-bottom:18px;box-shadow:0 0 30px ${colorMeta[wKey].hex}55;">
+      <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:8px;">🎨 Ta couleur dominante</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:5px;color:white;">${wMeta.label}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:4.5rem;color:white;line-height:1;">${sorted[0][1]}</div>
+      <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.7);">points</div>
+    </div>
+    <div style="background:#1a1a1a;border:1px solid #C9A84C44;border-radius:12px;padding:16px 20px;margin-bottom:18px;">
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;color:#C9A84C;margin-bottom:10px;text-align:center;">🏆 Ton classement final</div>
+      ${rankRows}
+    </div>
+    ${chartHtml}
+    <div style="text-align:center;font-size:0.65rem;letter-spacing:2px;color:#444;text-transform:uppercase;">besuccess2026.github.io/test-couleurs</div>
+  `;
+  document.body.appendChild(card);
+  return card;
+}
+
+function downloadImage() {
+  // Redraw chart to ensure canvas is populated
+  if(finalTotals) {
+    const sorted = Object.entries(finalTotals).sort((a,b)=>b[1]-a[1]);
+    drawChart(sorted);
+  }
+  setTimeout(() => {
+    const chartCanvas = document.getElementById('chart');
+    const chartDataUrl = chartCanvas ? chartCanvas.toDataURL('image/png') : null;
+    const card = buildExportCard(finalTotals, chartDataUrl);
+    html2canvas(card, {backgroundColor:'#111', scale:2, useCORS:true}).then(canvas => {
+      document.body.removeChild(card);
+      const a = document.createElement('a');
+      a.download = 'mon-profil-be-success.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    });
+  }, 100);
+}
+
+function downloadPDF() {
+  if(finalTotals) {
+    const sorted = Object.entries(finalTotals).sort((a,b)=>b[1]-a[1]);
+    drawChart(sorted);
+  }
+  setTimeout(() => {
+    const chartCanvas = document.getElementById('chart');
+    const chartDataUrl = chartCanvas ? chartCanvas.toDataURL('image/png') : null;
+    const card = buildExportCard(finalTotals, chartDataUrl);
+    html2canvas(card, {backgroundColor:'#111', scale:2, useCORS:true}).then(canvas => {
+      document.body.removeChild(card);
+      const imgData = canvas.toDataURL('image/png');
+      const win = window.open('');
+      win.document.write(`<html><body style="margin:0;background:#111;">
+        <img src="${imgData}" style="max-width:100%;display:block;" onload="window.print();window.close();">
+      </body></html>`);
+      win.document.close();
+    });
+  }, 100);
+}
+
+function openShareModal() {
+  if(!finalTotals) return;
+  const sorted = Object.entries(finalTotals).sort((a,b)=>b[1]-a[1]);
+  const lines = sorted.map(([k,v],i)=>`N°${i+1} : ${colorMeta[k].label} – ${v} pts`).join('\n');
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+  const text = `✨ Mon profil BE SUCCESS ✨\n${dateStr}\n\n${lines}\n\n🔗 Fais le test : ${window.location.href}`;
+  document.getElementById('share-text').value = text;
+  document.getElementById('share-modal').style.display = 'flex';
+}
+
+function closeShareModal() {
+  document.getElementById('share-modal').style.display = 'none';
+}
+
+function copyResults() {
+  const ta = document.getElementById('share-text');
+  ta.select();
+  document.execCommand('copy');
+  const btn = document.getElementById('copy-btn');
+  btn.textContent = '✅ COPIÉ !';
+  setTimeout(()=>{ btn.textContent = '📋 COPIER'; }, 2000);
+}
+
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#C9A84C','#FFD700','#E63946','#27AE60','#3A86FF','#F39C12','#fff'];
+
+  for(let i=0;i<160;i++) {
+    particles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height - canvas.height,
+      w: Math.random()*10+5,
+      h: Math.random()*6+4,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      vx: (Math.random()-0.5)*3,
+      vy: Math.random()*4+2,
+      rot: Math.random()*360,
+      rspeed: (Math.random()-0.5)*5
+    });
+  }
+
+  let frame;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x+p.w/2, p.y+p.h/2);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      p.x += p.vx; p.y += p.vy; p.rot += p.rspeed;
+      if(p.y > canvas.height) { p.y=-20; p.x=Math.random()*canvas.width; }
+    });
+    frame = requestAnimationFrame(draw);
+  }
+  draw();
+  setTimeout(()=>{ cancelAnimationFrame(frame); ctx.clearRect(0,0,canvas.width,canvas.height); }, 5000);
+}
+
+// ============================================================
+// RESTART
+// ============================================================
+function restartTest() {
+  p1Orders = {};
+  p2State = {};
+  finalTotals = null;
+  Object.keys(p1Moved).forEach(k => delete p1Moved[k]);
+  Object.keys(p2Moved).forEach(k => delete p2Moved[k]);
+  part1Questions.forEach(q => { p1Orders[q.id] = [...q.items.map(i=>i.num)]; });
+  part2Pairs.forEach((_,idx) => { p2State[idx]=2; });
+  part1Questions.forEach(q => renderDragList(q.id));
+  buildPart2();
+
+  document.getElementById('page-results').style.display='none';
+  document.getElementById('page-confetti').style.display='none';
+  document.getElementById('progress-wrap').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-welcome').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+buildAll();
+// Welcome page is already active via HTML, don't call showPage(0)
+</script>
+</body>
+</html>
